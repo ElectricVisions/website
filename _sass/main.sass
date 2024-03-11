@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap')
+
+$ev_outer: #00a6d7
+$ev_inner: #30e7ed
+$ev_darker: desaturate(darken($ev_outer, 10%), 20%)
+
+body
+  font-family: "Open Sans"
+  background-color: #1f242A
+
+
+nav
+  display: flex
+  justify-content: space-between
+
+  ul
+    list-style: none
+    display: flex
+    justify-content: space-between
+
+  button
+    color: white
+    border: none
+    background: none
+    &:hover
+      color: $ev_inner
+      cursor: pointer
+
+a
+  font-size: large
+  text-decoration: none
+  color: white
+  &:visited
+    color: white
+  padding: 0.5em
+  &:hover
+    border-bottom: 2px solid $ev_outer
+
+.active
+  border-bottom: 2px solid $ev_darker
+

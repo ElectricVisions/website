@@ -27,9 +27,15 @@ url: "https://electricvisions.github.io" # the base hostname & protocol for your
 github_username:  PhilT
 
 # Build settings
-theme: minima
+theme: 
 plugins:
   - jekyll-feed
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
