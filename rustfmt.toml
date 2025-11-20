@@ -1,0 +1,24 @@
+# Rustfmt configuration aligned with .editorconfig and CLAUDE.md
+edition = "2024"
+
+# Line width (matches .editorconfig max_line_length)
+max_width = 80
+
+# Indentation (matches .editorconfig indent_size)
+tab_spaces = 2
+
+# Use spaces instead of tabs (matches .editorconfig)
+hard_tabs = false
+
+# Newlines (matches .editorconfig end_of_line = lf)
+newline_style = "Unix"
+
+# Keep imports organized and readable
+reorder_imports = true
+
+# Function parameter formatting for readability
+fn_params_layout = "Tall"
+
+# Match formatting for consistent style
+match_block_trailing_comma = true
+

@@ -10,6 +10,9 @@ ul
   &.horizontal-list
     margin: 0
 
+li
+  margin: 0.2em 0
+
 @mixin light-appearance
   html, body 
     --bg: #fff
@@ -28,7 +31,7 @@ ul
     --highlight: #41c7c7
     --bg: #1f242a
     --bg-secondary: #323945
-    --text: #{$ev_faded}
+    --text: #d3d4d6
     --text-secondary: #9ca3af
     --code-text: #{$ev_inner}
 
@@ -40,7 +43,7 @@ html[data-theme="light"]
 
 body
   font-family: "Open Sans", sans-serif
-  font-size: 1.1rem
+  //font-size: 1.1rem
 
 .w
   padding: 1em
