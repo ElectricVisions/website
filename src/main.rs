@@ -1,3 +1,6 @@
+// metadata in md files overrides created date in filename
+// First H1 becomes title or metadata title if no H1
+
 use std::fs;
 use std::io::Write;
 use std::fs::File;
@@ -9,6 +12,7 @@ struct Post {
   created: String,
   updated: String,
   tags: String,
+  intro: String,
 }
 
 fn build_post(entry: fs::DirEntry) -> Post {
@@ -21,30 +25,38 @@ fn build_post(entry: fs::DirEntry) -> Post {
   let mut updated = String::from("");
   let mut tags = String::from("");
   let mut is_metadata = true;
-  let metadata_re = Regex::new(r": ").unwrap();
+  let mut intro = String::from("");
   let heading_re = Regex::new(r"^# ").unwrap();
 
   for line in contents.split("\n") {
+    let line = line.trim();
+
     if is_metadata {
-      if line.trim().is_empty() {
+      if line.is_empty() {
         is_metadata = false;
         continue;
       }
 
-      let key_value: Vec<&str> = metadata_re.splitn(line, 2).collect();
-      match key_value[0] {
-        "updated" => updated = String::from(key_value[1]),
-        "tags" => tags = String::from(key_value[1]),
-        _ => panic!("Unrecognised metadata: {}", key_value[0])
+      let (key, value) = line.split_once(": ").unwrap();
+      match key {
+        "title" => title = String::from(value),
+        "created" => updated = String::from(value),
+        "updated" => updated = String::from(value),
+        "tags" => tags = String::from(value),
+        _ => panic!("Unrecognised metadata: {}", value)
       }
+
+      continue;
     }
 
     if heading_re.is_match(line) {
-      let heading: Vec<&str> = heading_re.splitn(line, 2).collect();
-      title = String::from(heading[1]);
+      title = line[2..].to_string();
+    } else if !line.is_empty() {
+      intro.push_str(line);
+      intro.push('\n');
+    } else if !intro.is_empty() {
+      break;
     }
-
-    if !title.is_empty() { break; }
   }
 
   Post {
@@ -53,11 +65,11 @@ fn build_post(entry: fs::DirEntry) -> Post {
     created: String::from(&filename[0..10]),
     updated,
     tags,
+    intro,
   }
 }
 
 fn main() {
-  // Iterate over the posts/ folder
   let mut posts: Vec<Post> =
     fs::read_dir("posts")
       .unwrap()
@@ -66,11 +78,25 @@ fn main() {
 
   posts.sort_by_key(|p| p.created.clone());
 
-  let mut index = File::create("output/index.md").unwrap();
+  let mut index = File::create("output/www/index.html").unwrap();
 
-  println!("Writing to output/index.md");
-  for p in posts {
-    write!(index, "* [{}](posts/{}.html)\n", p.title, p.name).unwrap();
-  }
+  println!("Writing to output/www/index.html");
+
+  let posts = posts.iter().map(|p| {
+    format!(
+      r#"     <li><a href="posts/{}.html">{}</a></li>"#,
+      p.name, p.title
+    )
+  }).collect::<Vec<String>>().join("\n");
+
+  let html = format!(r#"<!DOCTYPE html>
+<html lang="en">
+  <ul>
+{posts}
+  </ul>
+</html>
+"#);
+
+  index.write_all(html.as_bytes()).unwrap();
 }
 

@@ -2,14 +2,11 @@
 
 mkdir -p output/www/posts
 
-echo "## Generating index.md"
+echo "## Generating index.html"
 cargo run
 
 echo "## Sending assets to output/"
 rsync -a assets/ output/www/
-
-echo "## Generating index.html"
-multimarkdown parse output/index.md > output/www/index.html
 
 echo "## Generating 404.html"
 multimarkdown parse pages/404.md > output/www/404.html
