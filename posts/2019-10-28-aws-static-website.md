@@ -1,6 +1,8 @@
+css: /css/main.css
 updated: 2020-04-29
 tags: web aws cert s3
 
+{{../templates/nav.html}}
 
 # Create a Static Website on AWS
 

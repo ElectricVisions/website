@@ -16,6 +16,10 @@ struct Post {
   intro: String,
 }
 
+fn load_template(name: &str) -> String {
+  fs::read_to_string(format!("templates/{name}.html")).unwrap()
+}
+
 fn build_post(filename: String, path: PathBuf) -> Post {
   let contents = fs::read_to_string(path).unwrap();
   println!("Reading from {}...", filename);
@@ -27,6 +31,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
   let mut is_metadata = true;
   let mut intro = String::from("");
   let heading_re = Regex::new(r"^# ").unwrap();
+  let transclusion_re = Regex::new(r"\{\{.*\}\}").unwrap();
 
   for line in contents.split("\n") {
     let line = line.trim();
@@ -43,7 +48,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
         "created" => created = String::from(value),
         "updated" => updated = String::from(value),
         "tags" => tags = String::from(value),
-        _ => panic!("Unrecognised metadata: {}", value)
+        _ => (), // Ignore unrecognised metadata
       }
 
       continue;
@@ -51,7 +56,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
 
     if heading_re.is_match(line) {
       title = line[2..].to_string();
-    } else if !line.is_empty() {
+    } else if !line.is_empty() && !transclusion_re.is_match(line) {
       intro.push_str(line);
       intro.push('\n');
     } else if !intro.is_empty() {
@@ -91,9 +96,15 @@ fn main() {
 
   println!("Writing to public/index.html");
 
-  let card = fs::read_to_string("templates/card.html").unwrap();
+  let nav = load_template("nav");
+  let card = load_template("card");
   let posts = posts.iter().map(|p| {
-    let updated = if p.updated.is_empty() { String::from("") } else { format!("Updated: {}", p.updated) };
+    let updated =
+      if p.updated.is_empty() {
+        String::from("")
+      } else {
+        format!("Updated: {}", p.updated)
+      };
 
     card
       .replace("{name}", &p.name)
@@ -104,9 +115,12 @@ fn main() {
       .replace("{intro}", &p.intro)
   }).collect::<Vec<String>>().join("\n");
 
-  let home = fs::read_to_string("templates/home.html").unwrap();
-  let home = home.replace("{intro}", &about.intro);
-  let home = home.replace("{posts}", &posts);
+  let home =
+    fs::read_to_string("templates/home.html")
+    .unwrap()
+    .replace("{nav}", &nav)
+    .replace("{intro}", &about.intro)
+    .replace("{posts}", &posts);
 
   index.write_all(home.as_bytes()).unwrap();
 }

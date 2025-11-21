@@ -1,5 +1,7 @@
+css: /css/main.css
 tags: game js physics
 
+{{../templates/nav.html}}
 
 # More JavaScript Physics
 

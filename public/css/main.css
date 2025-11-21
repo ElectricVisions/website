@@ -10,15 +10,10 @@
   --links-active-filter: invert(73%) sepia(53%) saturate(1434%) hue-rotate(301deg) brightness(98%) contrast(115%);
   --bg: #1f242a;
   --text: #d3d4d6;
+  --text-filter: invert(84%) sepia(1%) saturate(352%) hue-rotate(182deg) brightness(80%) contrast(95%);
   --tags: #73d0ff;
   --card-bg: #2a2f35;
   --text-secondary: #9ca3af;
-
-  /*--headings: var(--ev-outer);
-  --highlight: #41c7c7;
-  --bg-secondary: #323945;
-  --code-text: var(--ev-inner);
-  */
 }
 
 /* RESET */
@@ -115,6 +110,11 @@ nav {
 
   #social a img {
     display: block;
+    filter: var(--text-filter);
+
+    &:hover {
+      filter: var(--links-active-filter);
+    }
   }
 }
 

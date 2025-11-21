@@ -1,5 +1,7 @@
+css: /css/main.css
 tags: game js fp
 
+{{../templates/nav.html}}
 
 # Code Style and Functional Programming
 

@@ -9,10 +9,10 @@ echo "## Generating 404.html"
 multimarkdown parse pages/404.md > public/404.html
 
 echo "## Generating about.html"
-multimarkdown parse pages/about.md > public/about.html
+multimarkdown parse -r pages/about.md > public/about.html
 
 echo "## Generating HTML posts"
 for md_file in posts/*.md; do
   base_name=$(basename "$md_file" .md)
-  multimarkdown parse "$md_file" > "public/posts/${base_name}.html"
+  multimarkdown parse -r "$md_file" > "public/posts/${base_name}.html"
 done

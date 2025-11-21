@@ -1,5 +1,7 @@
+css: /css/main.css
 tags: dev
 
+{{../templates/nav.html}}
 
 # New Development Machine
 

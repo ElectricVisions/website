@@ -1,5 +1,7 @@
+css: /css/main.css
 tags: game js webgl
 
+{{../templates/nav.html}}
 
 # Language and framework choice
 

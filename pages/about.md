@@ -1,8 +1,10 @@
+css: /css/main.css
 title: About
 created: 2018-04-02
 updated: 2023-10-24
 tags: about game
 
+{{../templates/nav.html}}
 
 I've been a professional software developer for 20 years. I've written a lot of
 website applications and I absolutely love what I do. However, it's time to do

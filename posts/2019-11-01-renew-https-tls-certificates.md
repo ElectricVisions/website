@@ -1,6 +1,8 @@
+css: /css/main.css
 updated: 2020-11-12
 tags: deploy aws
 
+{{../templates/nav.html}}
 
 # Automatic Let's Encrypt TLS Certificates
 

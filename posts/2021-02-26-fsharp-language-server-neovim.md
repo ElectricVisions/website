@@ -1,6 +1,8 @@
+css: /css/main.css
 tags: f# tools vim lsp
 updated: 2021-03-27
 
+{{../templates/nav.html}}
 
 # F# Language server and Neovim 0.5
 

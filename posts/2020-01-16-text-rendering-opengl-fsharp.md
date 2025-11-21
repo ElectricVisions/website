@@ -1,5 +1,7 @@
+css: /css/main.css
 tags: game f# opengl
 
+{{../templates/nav.html}}
 
 # Text rendering with OpenGL and F#
 

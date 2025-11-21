@@ -1,9 +1,0 @@
-<ul class="horizontal-list">
-  {% for item in include.collection %}
-  <li {% if page.url == item.url %}class="current"{% endif %} >
-      <a href="{{ item.url }}">
-        {{ item.title }}
-      </a>
-    </li>
-  {% endfor %}
-</ul>

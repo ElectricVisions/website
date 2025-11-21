@@ -1,6 +1,8 @@
+css: /css/main.css
 updated: 2021-02-15
 tags: game f# .net
 
+{{../templates/nav.html}}
 
 # Project Reboot - Going all in on F#
 
