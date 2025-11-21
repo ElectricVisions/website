@@ -91,17 +91,23 @@ fn main() {
 
   println!("Writing to public/index.html");
 
+  let card = fs::read_to_string("templates/card.html").unwrap();
   let posts = posts.iter().map(|p| {
-    format!(
-      r#"     <li><a href="posts/{}.html">{}</a></li>"#,
-      p.name, p.title
-    )
+    let updated = if p.updated.is_empty() { String::from("") } else { format!("Updated: {}", p.updated) };
+
+    card
+      .replace("{name}", &p.name)
+      .replace("{tags}", &p.tags)
+      .replace("{created}", &p.created)
+      .replace("{updated}", &updated)
+      .replace("{title}", &p.title)
+      .replace("{intro}", &p.intro)
   }).collect::<Vec<String>>().join("\n");
 
-  let html = fs::read_to_string("layouts/home.html").unwrap();
-  let html = html.replace("{intro}", &about.intro);
-  let html = html.replace("{posts}", &posts);
+  let home = fs::read_to_string("templates/home.html").unwrap();
+  let home = home.replace("{intro}", &about.intro);
+  let home = home.replace("{posts}", &posts);
 
-  index.write_all(html.as_bytes()).unwrap();
+  index.write_all(home.as_bytes()).unwrap();
 }
 
