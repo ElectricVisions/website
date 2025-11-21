@@ -10,14 +10,14 @@
   },
 
   "routes": {
-    "/": "output/www/index.html"
+    "/": "public/index.html"
   },
 
   "static": {
-    "directory": "output/www",
+    "directory": "public",
     "served_from": "/",
     "error_pages": {
-      "404": "output/www/404.html"
+      "404": "public/404.html"
     }
   },
 

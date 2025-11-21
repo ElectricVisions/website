@@ -1,0 +1,42 @@
+@import url('fonts.css');
+@import url('nav.css');
+
+:root {
+  --ev-outer: #00a6d7;
+  --ev-inner: #30e7ed;
+  --ev-faded: #4fd6db;
+  --headings: var(--ev-outer);
+  --links: #FFCC66;
+  --highlight: #41c7c7;
+  --bg: #1f242a;
+  --bg-secondary: #323945;
+  --text: #d3d4d6;
+  --text-secondary: #9ca3af;
+  --code-text: var(--ev-inner);
+}
+
+body, ul, ol, li, a {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin: 0.2em 0;
+}
+
+a {
+  text-decoration: none;
+}

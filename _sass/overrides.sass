@@ -1,20 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap')
 
-$ev_outer: #00a6d7
-$ev_inner: #30e7ed
-$ev_faded: desaturate($ev_inner, 20%)
-
-ul
-  list-style: none
-  padding: 0
-  &.horizontal-list
-    margin: 0
-
-li
-  margin: 0.2em 0
-
 @mixin light-appearance
-  html, body 
+  html, body
     --bg: #fff
     --bg-secondary: #f3f4f6
     --headings: #1e293b
@@ -24,37 +11,3 @@ li
     --highlight: #ffecb2
     --code-text: #9d174d
 
-@mixin dark-appearance
-  html, body 
-    --headings: #{$ev_outer}
-    --links: #FFCC66
-    --highlight: #41c7c7
-    --bg: #1f242a
-    --bg-secondary: #323945
-    --text: #d3d4d6
-    --text-secondary: #9ca3af
-    --code-text: #{$ev_inner}
-
-html[data-theme="dark"] 
-  @include dark-appearance
-
-html[data-theme="light"]
-  @include light-appearance
-
-body
-  font-family: "Open Sans", sans-serif
-  //font-size: 1.1rem
-
-.w
-  padding: 1em
-
-h1
-  display: flex
-  justify-content: flex-start
-  font-size: 48px
-  img
-    width: 1em
-    margin: 0 0.5em 0 0 
-
-.current
-  border-bottom: 2px solid var(--links)

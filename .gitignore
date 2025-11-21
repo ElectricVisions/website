@@ -1,4 +1,4 @@
 .direnv/
-output/
+public/**/*.html
 target/
 tmp/
