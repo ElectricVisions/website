@@ -132,7 +132,7 @@ article {
   font-size: small;
   background-color: var(--card-bg);
   border-radius: 0.5em;
-  padding: 1em
+  padding: 1em;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
   cursor: pointer;
