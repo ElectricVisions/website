@@ -40,11 +40,13 @@ fn build_post(filename: String, path: PathBuf) -> Post {
   let transclusion_re = Regex::new(r"\{\{.*\}\}").unwrap();
 
   for line in contents.split("\n") {
-    let line = line.trim();
+    let line = line.trim_end();
 
     if is_metadata {
       if line.is_empty() {
         is_metadata = false;
+        continue;
+      } else if line.starts_with(" ") { // Don't try to parse multiline metadata
         continue;
       }
 
@@ -105,6 +107,7 @@ fn main() {
 
   let nav = load_template("nav");
   let card = load_template("card");
+  let highlightjs = load_template("highlightjs");
   let posts_html = posts.iter().map(|p| {
     let created = format_or_empty("Published: ", &p.created);
     let updated = format_or_empty("Updated: ", &p.updated);
@@ -130,6 +133,7 @@ fn main() {
   println!("Post-processing posts");
 
   // Reload the generated HTML posts and insert tags, created & updated dates
+  // And insert highlightjs.html into <head>
   for p in posts {
     let created = format_or_empty("Published: ", &p.created);
     let updated = format_or_empty("Updated: ", &p.updated);
@@ -138,6 +142,7 @@ fn main() {
     let html =
       fs::read_to_string(&path)
       .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path, e))
+      .replace("</head>", format!("{highlightjs}</html>").as_str())
       .replace("{tags}", &p.tags)
       .replace("{created}", &created)
       .replace("{updated}", &updated);

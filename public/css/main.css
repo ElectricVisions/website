@@ -75,6 +75,10 @@ ul {
   list-style: none;
 }
 
+ol {
+  padding-left: 2em;
+}
+
 a {
   text-decoration: none;
   color: var(--links);
@@ -155,9 +159,10 @@ article {
 }
 
 article {
+  .tags,
   .created,
   .updated {
-    font-size: 0.9em;
+    font-size: 0.8em;
   }
 
   .tags,
@@ -166,7 +171,6 @@ article {
   }
 
   .tags {
-    font-size: 0.8em;
     text-transform: uppercase;
     color: var(--ev-outer);
     word-spacing: 0.3em;
@@ -210,6 +214,11 @@ article.post {
   header {
     display: flex;
     justify-content: space-between;
+
+    .dates {
+      display: flex;
+      gap: 1em;
+    }
 
     .tags,
     .created,

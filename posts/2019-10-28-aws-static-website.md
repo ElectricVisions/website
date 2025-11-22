@@ -27,10 +27,10 @@ login to your domain registrar (I'm using (https://namecheap.com)).
 It's helpful to have the following 4 tabs open to copy data from one to the
 other while going through this process.
 
-1. https://s3.console.aws.amazon.com
-1. https://console.aws.amazon.com/cloudfront
-1. https://console.aws.amazon.com/route53
-1. https://ap.www.namecheap.com/ (or your domain registrar)
+1. [https://s3.console.aws.amazon.com](https://s3.console.aws.amazon.com)
+1. [https://console.aws.amazon.com/cloudfront](https://console.aws.amazon.com/cloudfront)
+1. [https://console.aws.amazon.com/route53](https://console.aws.amazon.com/route53)
+1. [https://ap.www.namecheap.com/](https://ap.www.namecheap.com/) (or your domain registrar)
 
 
 ## Register a domain
@@ -70,7 +70,7 @@ So for the apex domain our bucket will be called **electricvisions.com**.
 1. Enter the following into the editor changing `electricvisions` to your domain
    and click **Save**
 
-```
+```json
 {
     "Version": "2012-10-17",
     "Statement": [
