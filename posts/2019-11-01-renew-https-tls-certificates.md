@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2019-11-01
+css: /css/post.css
 updated: 2020-11-12
 tags: deploy aws
 

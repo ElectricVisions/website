@@ -1,4 +1,4 @@
-css: /css/main.css
+css: /css/post.css
 title: About
 created: 2018-04-02
 updated: 2023-10-24

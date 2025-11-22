@@ -45,7 +45,7 @@ body {
   background-color: var(--bg);
   color: var(--text);
   padding-bottom: 40px;
-  margin: 1em;
+  margin: 2em;
   margin-top: 0;
 }
 
@@ -175,3 +175,4 @@ article {
     color: var(--text);
   }
 }
+

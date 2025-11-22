@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2019-06-30
+css: /css/post.css
 tags: dev
 
 {{../templates/nav.html}}

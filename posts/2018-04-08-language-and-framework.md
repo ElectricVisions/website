@@ -1,7 +1,9 @@
-css: /css/main.css
+created: 2018-04-08
+css: /css/post.css
 tags: game js webgl
 
 {{../templates/nav.html}}
+{{../templates/info.html}}
 
 # Language and framework choice
 

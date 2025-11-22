@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2021-02-26
+css: /css/post.css
 tags: f# tools vim lsp
 updated: 2021-03-27
 

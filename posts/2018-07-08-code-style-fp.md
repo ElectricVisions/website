@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2018-07-08
+css: /css/post.css
 tags: game js fp
 
 {{../templates/nav.html}}

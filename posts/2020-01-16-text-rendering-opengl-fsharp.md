@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2020-01-16
+css: /css/post.css
 tags: game f# opengl
 
 {{../templates/nav.html}}

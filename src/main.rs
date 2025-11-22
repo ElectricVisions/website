@@ -91,6 +91,7 @@ fn main() {
   let about = build_post("about.md".to_string(), "pages/about.md".into());
 
   posts.sort_by_key(|p| p.created.clone());
+  posts.reverse();
 
   let mut index = File::create("public/index.html").unwrap();
 

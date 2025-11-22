@@ -1,4 +1,5 @@
-css: /css/main.css
+created: 2019-11-12
+css: /css/post.css
 updated: 2020-02-18
 tags: f# testing
 
