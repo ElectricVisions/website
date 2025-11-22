@@ -46,6 +46,7 @@ pkgs.mkShell {
     multimarkdown7      # Convert markdown to HTML (version 7)
   ] ++ (with pkgs; [
     binserve            # Static webserver for testing
+    wrangler            # Cloudflare CLI
 
     # Rust
     rustc
