@@ -1,9 +1,8 @@
-created: 2018-04-08
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game js webgl
 
-{{../templates/nav.html}}
-{{../templates/info.html}}
 
 # Language and framework choice
 

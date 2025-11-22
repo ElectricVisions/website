@@ -1,8 +1,8 @@
-created: 2018-05-06
-css: /css/posts.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game js physics
 
-{{../templates/nav.html}}
 
 # More JavaScript Physics
 

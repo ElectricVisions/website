@@ -1,8 +1,8 @@
-created: 2019-11-20
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game f# opengl
 
-{{../templates/nav.html}}
 
 # Cube rendering library in F#
 

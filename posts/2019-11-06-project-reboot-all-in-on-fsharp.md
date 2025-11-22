@@ -1,9 +1,9 @@
-created: 2019-11-06
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 updated: 2021-02-15
 tags: game f# .net
 
-{{../templates/nav.html}}
 
 # Project Reboot - Going all in on F#
 

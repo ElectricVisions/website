@@ -2,7 +2,13 @@
 
 mkdir -p public/posts
 
-echo "## Generating index.html"
+echo "## Generating HTML posts"
+for md_file in posts/*.md; do
+  base_name=$(basename "$md_file" .md)
+  multimarkdown parse -r "$md_file" > "public/posts/${base_name}.html"
+done
+
+echo "## Generating index.html and post-processing posts"
 cargo run
 
 echo "## Generating 404.html"
@@ -11,8 +17,3 @@ multimarkdown parse pages/404.md > public/404.html
 echo "## Generating about.html"
 multimarkdown parse -r pages/about.md > public/about.html
 
-echo "## Generating HTML posts"
-for md_file in posts/*.md; do
-  base_name=$(basename "$md_file" .md)
-  multimarkdown parse -r "$md_file" > "public/posts/${base_name}.html"
-done

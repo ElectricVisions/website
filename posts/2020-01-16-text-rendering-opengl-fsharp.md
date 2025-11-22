@@ -1,8 +1,8 @@
-created: 2020-01-16
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game f# opengl
 
-{{../templates/nav.html}}
 
 # Text rendering with OpenGL and F#
 

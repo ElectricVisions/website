@@ -1,8 +1,8 @@
-created: 2019-06-30
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: dev
 
-{{../templates/nav.html}}
 
 # New Development Machine
 

@@ -1,9 +1,9 @@
-created: 2019-11-12
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 updated: 2020-02-18
 tags: f# testing
 
-{{../templates/nav.html}}
 
 # Automated Testing In F# With Expecto
 

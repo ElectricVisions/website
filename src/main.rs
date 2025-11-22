@@ -20,8 +20,14 @@ fn load_template(name: &str) -> String {
   fs::read_to_string(format!("templates/{name}.html")).unwrap()
 }
 
+fn format_or_empty(label: &str, value: &String) -> String {
+  if value.is_empty() { return String::from("")}
+
+  format!("{label}{value}")
+}
+
 fn build_post(filename: String, path: PathBuf) -> Post {
-  let contents = fs::read_to_string(path).unwrap();
+  let contents = fs::read_to_string(&path).unwrap();
   println!("Reading from {}...", filename);
 
   let mut title = String::from("");
@@ -99,18 +105,14 @@ fn main() {
 
   let nav = load_template("nav");
   let card = load_template("card");
-  let posts = posts.iter().map(|p| {
-    let updated =
-      if p.updated.is_empty() {
-        String::from("")
-      } else {
-        format!("Updated: {}", p.updated)
-      };
+  let posts_html = posts.iter().map(|p| {
+    let created = format_or_empty("Published: ", &p.created);
+    let updated = format_or_empty("Updated: ", &p.updated);
 
     card
       .replace("{name}", &p.name)
       .replace("{tags}", &p.tags)
-      .replace("{created}", &p.created)
+      .replace("{created}", &created)
       .replace("{updated}", &updated)
       .replace("{title}", &p.title)
       .replace("{intro}", &p.intro)
@@ -121,8 +123,27 @@ fn main() {
     .unwrap()
     .replace("{nav}", &nav)
     .replace("{intro}", &about.intro)
-    .replace("{posts}", &posts);
+    .replace("{posts}", &posts_html);
 
   index.write_all(home.as_bytes()).unwrap();
+
+  println!("Post-processing posts");
+
+  // Reload the generated HTML posts and insert tags, created & updated dates
+  for p in posts {
+    let created = format_or_empty("Published: ", &p.created);
+    let updated = format_or_empty("Updated: ", &p.updated);
+    let path = format!("public/posts/{}.html", &p.name);
+
+    let html =
+      fs::read_to_string(&path)
+      .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path, e))
+      .replace("{tags}", &p.tags)
+      .replace("{created}", &created)
+      .replace("{updated}", &updated);
+
+      let mut post = File::create(path).unwrap();
+      post.write_all(html.as_bytes()).unwrap();
+  }
 }
 

@@ -1,9 +1,9 @@
-created: 2021-02-26
-css: /css/post.css
-tags: f# tools vim lsp
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 updated: 2021-03-27
+tags: f# tools vim lsp
 
-{{../templates/nav.html}}
 
 # F# Language server and Neovim 0.5
 

@@ -1,8 +1,8 @@
-created: 2018-07-08
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game js fp
 
-{{../templates/nav.html}}
 
 # Code Style and Functional Programming
 

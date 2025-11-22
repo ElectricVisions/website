@@ -3,17 +3,36 @@
 :root {
   --ev-outer: #00a6d7;
   --ev-inner: #30e7ed;
-  --ev-link-active-filter: brightness(120%);
   --links: #ffcc66;
-  --links-filter: invert(91%) sepia(99%) saturate(7482%) hue-rotate(310deg) brightness(105%) contrast(101%);
   --links-active: #f27983;
-  --links-active-filter: invert(73%) sepia(53%) saturate(1434%) hue-rotate(301deg) brightness(98%) contrast(115%);
   --bg: #1f242a;
   --text: #d3d4d6;
-  --text-filter: invert(84%) sepia(1%) saturate(352%) hue-rotate(182deg) brightness(80%) contrast(95%);
   --tags: #73d0ff;
   --card-bg: #2a2f35;
-  --text-secondary: #9ca3af;
+  --text-secondary: #5C6773;
+
+  --ev-link-active-filter: brightness(120%);
+  --links-filter:
+    invert(91%)
+    sepia(99%)
+    saturate(7482%)
+    hue-rotate(310deg)
+    brightness(105%)
+    contrast(101%);
+  --links-icons-filter:
+    invert(84%)
+    sepia(1%)
+    saturate(352%)
+    hue-rotate(182deg)
+    brightness(110%)
+    contrast(95%);
+  --links-active-filter:
+    invert(73%)
+    sepia(53%)
+    saturate(1434%)
+    hue-rotate(301deg)
+    brightness(98%)
+    contrast(115%);
 }
 
 /* RESET */
@@ -110,7 +129,7 @@ nav {
 
   #social a img {
     display: block;
-    filter: var(--text-filter);
+    filter: var(--links-icons-filter);
 
     &:hover {
       filter: var(--links-active-filter);
@@ -127,7 +146,36 @@ main {
   gap: 1em;
 }
 
+main,
 article {
+  padding-bottom: 5em; /* bottom of page padding */
+}
+
+article {
+  .created,
+  .updated {
+    font-size: 0.9em;
+  }
+
+  .tags,
+  .updated {
+    margin-bottom: 0.5em;
+  }
+
+  .tags {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: var(--ev-outer);
+    word-spacing: 0.3em;
+  }
+
+  .created,
+  .updated {
+    color: var(--text-secondary);
+  }
+}
+
+article.card {
   flex: 1 1 15em;
   font-size: small;
   background-color: var(--card-bg);
@@ -142,23 +190,6 @@ article {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
   }
 
-  .tags,
-  .created,
-  .updated {
-    font-size: 0.9em;
-  }
-
-  .tags,
-  .updated {
-    margin-bottom: 0.5em;
-  }
-
-  .tags {
-    text-transform: uppercase;
-    color: var(--ev-outer);
-    word-spacing: 0.3em;
-  }
-
   h3 {
     font-size: 1.7em;
     font-weight: lighter;
@@ -166,13 +197,39 @@ article {
     margin-bottom: 0.1em;
   }
 
-  .created,
-  .updated {
-    color: var(--text-secondary);
-  }
-
   .intro {
     color: var(--text);
   }
 }
 
+/* POSTS */
+article.post {
+  header {
+    display: flex;
+    justify-content: space-between;
+
+    .tags,
+    .created,
+    .updated {
+      margin: 0;
+    }
+  }
+
+  h1 {
+    font-weight: lighter;
+    color: var(--links);
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin-top: 1em;
+  }
+
+  h2 {
+    margin-top: 2em;
+  }
+
+  h3 {
+    margin-top: 1em;
+  }
+}

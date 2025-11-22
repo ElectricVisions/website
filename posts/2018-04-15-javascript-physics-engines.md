@@ -1,8 +1,8 @@
-created: 2018-04-15
-css: /css/post.css
+mmd header: {{../templates/header.html}}
+mmd footer: {{../templates/footer.html}}
+css: /css/main.css
 tags: game js webgl physics
 
-{{../templates/nav.html}}
 
 # JavaScript Physics Engines
 
