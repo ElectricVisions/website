@@ -11,7 +11,7 @@ I've been using Neovim 0.5 (nightly) for several months now and I think I've fin
 
 Previously I'd been using Neovim and [coc.nvim](https://github.com/neoclide/coc.nvim) along with the [coc-fsharp](https://github.com/coc-extensions/coc-fsharp) plugin which was working well. However, .NET 5 is out and the [fsharp-language-server](https://github.com/fsprojects/fsharp-language-server) which is the upstream project of coc-fsharp is in need of some love. It's also not, what I would call, the official language server for F#. That title goes to [FsAutoComplete](https://github.com/fsharp/fsautocomplete). However, [vim-fsharp](https://github.com/fsharp/vim-fsharp)'s support for FsAutoComplete seems like it no longer works (having not been updated for some time) and other projects such as [Ionide](https://github.com/ionide/ionide-vim) only support specific clients such as [LanguageClient-Neovim](https://github.com/autozimu/LanguageClient-neovim). Again, this plugin has had multiple issues and certainly does not work out of the box in my case and others have experienced similar issues. I'd previously seen some success using fsharp-language-server directly but again it wasn't reliable and had stopped working, though that could be down to changes in the dev version of Neovim 0.5.
 
-Thing were bleak, at least from *my* F# development perspective.
+Things were bleak, at least from *my* F# development perspective.
 
 ## Do It Yourself
 

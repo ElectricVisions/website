@@ -4,6 +4,7 @@
   --ev-outer: #00a6d7;
   --ev-inner: #30e7ed;
   --links: #ffcc66;
+  --links-alt: #00a6d7;
   --links-active: #f27983;
   --bg: #1f242a;
   --text: #d3d4d6;
@@ -19,6 +20,7 @@
     hue-rotate(310deg)
     brightness(105%)
     contrast(101%);
+
   --links-icons-filter:
     invert(84%)
     sepia(1%)
@@ -26,6 +28,7 @@
     hue-rotate(182deg)
     brightness(110%)
     contrast(95%);
+
   --links-active-filter:
     invert(73%)
     sepia(53%)
@@ -229,7 +232,41 @@ article.post {
     margin-top: 2em;
   }
 
-  h3 {
+  h3, h4 {
     margin-top: 1em;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  figure {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  figcaption {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+  }
+
+  .TOC {
+    column-width: 200px;
+    column-gap: 2rem;
+    font-size: 0.8em;
+    background-color: var(--card-bg);
+    padding: 1em;
+    border-radius: 0.5em;
+
+    ul {
+      font-weight: bold;
+    }
+
+    ul ul {
+      padding-left: 1em;
+      border-left: 1px solid var(--text-secondary);
+      font-weight: normal;
+      margin-bottom: 0.5em;
+    }
   }
 }
