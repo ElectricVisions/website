@@ -5,7 +5,7 @@ updated: 2021-02-15
 tags: game f# .net
 
 
-# Project Reboot - Going all in on F#
+# Project Reboot - Going all in on F\#
 
 Whoah! Over a year since I posted updates! Selling our house and all our stuff and moving into a van is time consuming! In that time I've had a chance to re-evaluate some of the choices I made when starting this project.
 

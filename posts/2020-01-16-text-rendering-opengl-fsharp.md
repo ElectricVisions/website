@@ -4,7 +4,7 @@ css: /css/main.css
 tags: game f# opengl
 
 
-# Text rendering with OpenGL and F#
+# Text rendering with OpenGL and F\#
 
 Unlike WebGL, rendering text in OpenGL is a bit more complicated. Here's how I went about it with F#.
 

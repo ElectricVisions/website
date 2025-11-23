@@ -4,7 +4,7 @@ css: /css/main.css
 tags: game f# opengl
 
 
-# Cube rendering library in F#
+# Cube rendering library in F\#
 
 I finally reimplemented my basic cube rendering library in F# and OpenGL from JavaScript and WebGL.
 

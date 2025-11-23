@@ -26,6 +26,10 @@ fn format_or_empty(label: &str, value: &String) -> String {
   format!("{label}{value}")
 }
 
+fn unescape(s: &str) -> String {
+  s.replace("\\#", "#")
+}
+
 fn build_post(filename: String, path: PathBuf) -> Post {
   let contents = fs::read_to_string(&path).unwrap();
   println!("Reading from {}...", filename);
@@ -52,7 +56,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
 
       let (key, value) = line.split_once(": ").unwrap();
       match key {
-        "title" => title = String::from(value),
+        "title" => title = unescape(value),
         "created" => created = String::from(value),
         "updated" => updated = String::from(value),
         "tags" => tags = String::from(value),
@@ -63,7 +67,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
     }
 
     if heading_re.is_match(line) {
-      title = line[2..].to_string();
+      title = unescape(&line[2..]);
     } else if !line.is_empty() && !transclusion_re.is_match(line) {
       intro.push_str(line);
       intro.push('\n');
