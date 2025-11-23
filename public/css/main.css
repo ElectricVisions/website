@@ -279,3 +279,11 @@ article.post {
     }
   }
 }
+
+/* IMAGES */
+img#zorlandc {
+  width: 168px;
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 1em;
+}

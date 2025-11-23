@@ -129,7 +129,7 @@ fn main() {
     fs::read_to_string("templates/home.html")
     .unwrap()
     .replace("{nav}", &nav)
-    .replace("{intro}", &about.intro)
+    .replace("{intro}", format!("{} <div><a href=\"/about.html\">more...</a></div>", &about.intro).as_str())
     .replace("{posts}", &posts_html);
 
   index.write_all(home.as_bytes()).unwrap();
