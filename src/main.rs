@@ -30,6 +30,12 @@ fn unescape(s: &str) -> String {
   s.replace("\\#", "#")
 }
 
+fn get_created(filename: &str) -> String {
+  if filename.starts_with("draft-") { return "draft".to_string() }
+
+  filename[0..10].to_string()
+}
+
 fn build_post(filename: String, path: PathBuf) -> Post {
   let contents = fs::read_to_string(&path).unwrap();
   println!("Reading from {}...", filename);
@@ -79,7 +85,7 @@ fn build_post(filename: String, path: PathBuf) -> Post {
   Post {
     name: String::from(&filename[0..filename.len() - 3]),
     title,
-    created: if created.is_empty() { String::from(&filename[0..10]) } else { created },
+    created: if created.is_empty() { get_created(&filename) } else { created },
     updated,
     tags,
     intro,

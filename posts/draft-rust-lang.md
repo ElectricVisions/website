@@ -4,13 +4,13 @@ css: /css/main.css
 tags: rust
 
 
-# Rust: A beginners guide (for experienced programmers)
+# Rust: A guide for experienced programmers
 
 A whirlwind tour of the syntax and key features for the experienced programmer.
 I wrote this for me.
 Hopefully others will find it useful.
 
-Bevy is a 2D and 3D game engine for Rust with complementry ECS to boot.
+Bevy is a 2D and 3D game engine for Rust with complementary ECS to boot.
 I wanted to look into using Bevy to re-ignite my game development journey.
 For that, I needed to learn Rust.
 So here is a guide to getting started with the language.
@@ -33,7 +33,7 @@ Hello, world!
 
 ## Cargo
 
-`src/main.rs` is the entrypoint of the default binary.
+`src/main.rs` is the entry point of the default binary.
 `target/debug/` is where build artifacts end up in debug mode.
 `target/release/` is where build artifacts end up in release mode.
 
@@ -56,10 +56,10 @@ let z = 1.2;              // A 64 bit float
 ```
 
 Constants
-* cannot be marked as `mut`able.
-* must be annotated with a type (e.g. 32-bit unsigned integer as above)
-* can be declared in any scope
-* may only be set to a constant expression (they cannot be computed at runtime)
+* Cannot be marked as `mut`able.
+* Must be annotated with a type (e.g. 32-bit unsigned integer as above)
+* Can be declared in any scope
+* May only be set to a constant expression (they cannot be computed at runtime)
 
 Variables may be shadowed, as in, the same name can be used in in the same or
 nested scope and it'll override the one previously defined, allowing variable
@@ -182,6 +182,68 @@ for i in a {
 
 ### match
 
+I'm familiar with this one from F#. It works pretty much the same way.
+
+```rust
+let value = 4;
+match value {
+  1 => println!("One!"),
+  2 | 3 => println!("Two or three!"),
+  a if value < 10 => println!("Single digit: {}", a),
+  _ => println!("Some other value"),
+}
+```
+
+
+## Borrowing
+
+When passing parameters to functions they can be copied (most primitive types),
+moved (most other types) or borrowed (immutably or mutably).
+To "borrow" a variable you pass it by reference (`&some_var`).
+
+Most types are moved by default.
+Types that are copied by default have the Copy trait
+e.g. primitive types such as integers, floats, booleans, chars.
+Arrays & tuples of Copy types are also Copy by default.
+
+```rust
+#[derive(Copy, Clone)] // <--- Make Point a Copy type
+struct Point {         // As it's types are all Copy this works
+  x: f32,              // <- A Copy type
+  y: f64,              // <- A Copy type
+}
+```
+
+`str` is not a Copy type.
+Use `&str` to pass a reference which is an immutable borrow.
+
+### Rules
+
+One mutable
+
+
+## Error Handling
+
+No exceptions in Rust.
+You must handle ALL errors.
+Again this is quite common in functional languages.
+It's called Railway programming in some circles.
+Using the Result type.
+
+```rust
+fn divide(a: f64, b: f64) -> Result<f64, String> {
+  if b == 0.0 {
+    Err("Div by zero".to_string())
+  } else {
+    Ok(a / b)
+  }
+}
+
+match divide(10.0, 0.0) {
+  Err(msg) => println!("{}", msg),
+  Ok(answer) => println!("The answer is {}.", answer),
+}
+```
 
 
 ## Iterators

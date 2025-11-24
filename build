@@ -1,6 +1,10 @@
 #!/usr/bin/env sh
 
+# This is very basic at the moment. We could do with more make style
+# build tool and checks the input dates to see if it actually needs rebuilding.
+
 mkdir -p public/posts
+rm public/posts/*.html
 
 echo "## Generating HTML posts"
 for md_file in posts/*.md; do
