@@ -12,7 +12,7 @@ echo "## Generating index.html and post-processing posts"
 cargo run
 
 echo "## Generating 404.html"
-multimarkdown parse pages/404.md > public/404.html
+multimarkdown parse -r pages/404.md > public/404.html
 
 echo "## Generating about.html"
 multimarkdown parse -r pages/about.md > public/about.html
