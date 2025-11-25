@@ -219,7 +219,7 @@ Use `&str` to pass a reference which is an immutable borrow.
 
 ### Rules
 
-One mutable
+One mutable OR multiple immutable references at a time.
 
 
 ## Error Handling

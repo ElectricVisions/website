@@ -38,7 +38,6 @@ fn get_created(filename: &str) -> String {
 
 fn build_post(filename: String, path: PathBuf) -> Post {
   let contents = fs::read_to_string(&path).unwrap();
-  println!("Reading from {}...", filename);
 
   let mut title = String::from("");
   let mut created =  String::from("");
@@ -113,7 +112,7 @@ fn main() {
 
   let mut index = File::create("public/index.html").unwrap();
 
-  println!("Writing to public/index.html");
+  println!("## Writing to public/index.html");
 
   let nav = load_template("nav");
   let card = load_template("card");
@@ -140,7 +139,7 @@ fn main() {
 
   index.write_all(home.as_bytes()).unwrap();
 
-  println!("Post-processing posts");
+  println!("## Post-processing posts");
 
   // Reload the generated HTML posts and insert tags, created & updated dates
   // And insert highlightjs.html into <head>
@@ -148,17 +147,22 @@ fn main() {
     let created = format_or_empty("Published: ", &p.created);
     let updated = format_or_empty("Updated: ", &p.updated);
     let path = format!("public/posts/{}.html", &p.name);
+    let original_html =
+      fs::read_to_string(&path)
+      .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path, e));
 
     let html =
-      fs::read_to_string(&path)
-      .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path, e))
+      original_html
       .replace("</head>", format!("{highlightjs}</html>").as_str())
       .replace("{tags}", &p.tags)
       .replace("{created}", &created)
       .replace("{updated}", &updated);
 
+    if html != original_html {
       let mut post = File::create(path).unwrap();
       post.write_all(html.as_bytes()).unwrap();
+      println!("  Processed {}", p.name)
+    }
   }
 }
 
