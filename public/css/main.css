@@ -281,9 +281,21 @@ article.post {
 }
 
 /* IMAGES */
-img#zorlandc {
-  width: 168px;
+figure:has(#zorlandc),
+figure:has(#zsavoyager) {
+  font-size: 0.8em;
+}
+
+figure:has(#zorlandc) {
   float: right;
+  width: 168px;
   margin-left: 1em;
+  margin-bottom: 1em;
+}
+
+figure:has(#zsavoyager) {
+  float: left;
+  max-width: 50%;
+  margin-right: 1em;
   margin-bottom: 1em;
 }

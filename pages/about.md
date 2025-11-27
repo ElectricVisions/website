@@ -21,7 +21,7 @@ Electric Visions is run by one person (so far), me.
 
 ## A bit more about me
 
-![ZorlandC][]
+![Zorland C][zorlandc]
 
 I was 7 years old when I got my first computer, a Commodore 64. It didn't take
 me long to go from playing games to keying in the programs from the manual and
@@ -59,4 +59,4 @@ So, I'm telling myself "I am a game designer". One day it will be true.
 
 ![Destroyed blocks](/images/destroyed.webp)
 
-[ZorlandC]: /images/zorlandc.webp "ZorlandC manual" width=168px height=249px
+[zorlandc]: /images/zorlandc.webp "ZorlandC manual"
