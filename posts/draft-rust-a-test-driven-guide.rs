@@ -6,59 +6,108 @@ tags: rust
 
 # Rust: A Test Driven Guide
 
+A quick tour of Rust for the experienced programmer.
+I wrote this to help me learn the language as efficiently as possible.
+It's not exhaustive, but should allow me to start writing some code.
+
+One thing to note about the style.
+I've gone for 2 spaces for indentation due to many years as a Ruby programmer.
+This combined with an 80 character line length allows more splits for files in
+Neovim.
+
+#### Contents
+{{TOC:2-3}}
+
 ## Linting with clippy
 clippy is a linting tool that checks for common mistakes and provides suggestions
 
 It's a bit strict for our examples so we'll leave it off. But you would enable
 like this:
+```rust
 #![warn(clippy::all, clippy::pedantic)]
+```
 
 ## [rust-script](https://rust-script.org/)
 
-This tool allows us to run one-off scripts from any folder and optionally include
-crates. For tests to run we need a main function. This would normally be the
+For basic stuff that doesn't need any crates (libraries) you can just run
+`rustc script.rs` and it'll compile a `./script` binary. However, for this
+blog I needed something more.
+
+`rust-script` compiles and runs one-off scripts from any folder.
+You can also add a crate description to the script to allow additional
+dependencies to be included.
+
+```rust
+{{../scripts/rust-script-test}}
+```
+
+For tests to run we need a main function. This would normally be the
 entry point of the program.
+
+## Cargo
+
+For projects, you'll want to use `cargo` which is a build tool and package manager.
+
+`src/main.rs` is the entry point of the default binary.
+`target/debug/` is where build artifacts end up in debug mode.
+`target/release/` is where build artifacts end up in release mode.
+
+    cargo new proj_name     # Create a new Rust project in proj_name/
+    cargo build             # Builds a project in debug mode
+    cargo build --release   # Builds a project in release mode
+    cargo run               # Runs the default binary
+    cargo check             # Checks for errors without building. Fast.
+
+More info at [https://doc.rust-lang.org/cargo/](https://doc.rust-lang.org/cargo/).
 */
 
 fn main() {}
 
-// ## Macros
-// Macros are a way to define reusable code. They're similar to functions but
-// they're expanded by the compiler.
-// This one creates a nice `refute!` macro that's the opposite of `assert!`.
-// I'm a Ruby developer and brought this over from the Minitest syntax. I think
-// it's easier to read than `assert!(!cond)`.
+/*
+## Macros
+Macros are a way to define reusable code. They're similar to functions but
+they're expanded by the compiler.
+This one creates a nice `refute!` macro that's the opposite of `assert!`.
+I'm a Ruby developer and brought this over from the Minitest syntax. I think
+it's easier to read than `assert!(!cond)`.
+*/
 macro_rules! refute {
   ($cond:expr $(,)?) => { assert!(!$cond) };
   ($cond:expr, $($arg:tt)+) => { assert!(!$cond, $($arg)+) };
 }
 
-// The #[test] **attribute** marks a function as a test. It'll get picked up
-// by the test runner and run when you run `cargo test` (or `cargo t`).
+/*
+The #[test] **attribute** marks a function as a test. It'll get picked up
+ by the test runner and run when you run `cargo test` (or `cargo t`).
+*/
 #[test]
-fn hello_world() {                        // This is a function
-  println!("Hello, world!");              // Run with cargo t -- --nocapture to see output
-  assert_eq!(1, 1);
+fn hello_world() {           // This is a function
+  println!("Hello, world!"); // Run with cargo t -- --nocapture to see output
+  assert_eq!(1, 1);          // Asserts that the left and right values are equal
 
   // Ordering of assertion values is not important
-  let left = "value";  // When values don't match it'll output the "left"
-  let right = "value"; // and "right" values so it's easy to identify which is which
+  let left = "value";  // When values don't match it'll output the "left" and
+  let right = "value"; // "right" values so it's easy to identify which is which.
   assert_eq!(left, right);
 }
 
-// The `should_panic` attribute tells the test runner to expect a panic. If it doesn't panic
-// then the test will fail. Watch when you run `cargo t -- --nocapture`. You'll
-// see it panics but all the tests pass.
-// A panic is like an exception in other languages. However Rust uses the Result
-// type to indicate success or failure.
+/*
+The `should_panic` attribute tells the test runner to expect a panic.
+If it doesn't panic then the test will fail. Watch when you run `cargo t -- --nocapture`. You'll
+see it panics but all the tests pass.
+A panic is like an exception in other languages. However Rust uses the Result
+type to indicate success or failure.
+*/
 #[test]
 #[should_panic(expected = "assertion `left == right` failed\n  left: 1\n right: 2")]
 fn failing_test() {
   assert_eq!(1, 2);
 }
 
-// ## Variables
-// Variables are immutable by default. Use `mut` to make them mutable.
+/*
+## Variables
+Variables are immutable by default. Use `mut` to make them mutable.
+*/
 #[test]
 fn variables() {
   let x = 2;                    // An immutable variable
@@ -66,32 +115,47 @@ fn variables() {
   y += x;
   assert_eq!(y, 7);
 
-  const A_CONST: f32 = 1.2;     // Constants cannot be marked as mutable, must
-                                // have a type, may only be set to a constant expression
+  const A_CONST: f32 = 1.2;     // Constants cannot be marked as `mut`able, must
+                                // have a type, can be declared in any scope and
+                                // may only be set to a constant expression.
   let z = 1.2;
   assert_eq!(A_CONST, z);
 
+}
+
+/*
+Variables may be shadowed, as in, the same name can be used in the same or
+nested scope and it'll override the one previously defined, allowing variable
+name reuse.
+*/
+#[test]
+fn variable_shadowing() {
   let a = 1;
   assert_eq!(a, 1);
   let a = 2;                    // Second declaration shadows the first
   assert_eq!(a, 2);             // Useful for reusing names.
 }
 
-// ## Basic Types
+/*
+## Basic Types
+*/
 #[test]
 fn basic_types() {
   // isize and usize are architecture-dependent and used for collection indexing.
-  let int8: i8 = -1;          // Signed integers are i8, i16, i32, i64, i128, isize
-  let unsigned8: u8 = 255;    // Unsigned integers are u8, u16, u32, u64, u128, usize
-  let float32 = 1.0;          // Floats f32 by default
+  let int8: i8 = -1;       // Signed integers are i8, i16, i32, i64, i128, isize
+  let unsigned8: u8 = 255; // Unsigned integers are u8, u16, u32, u64, u128, usize
+  let float32 = 1.0;       // Floats f32 by default
   let float64: f64 = 1.0;
-  let default32 = 1;          // Default type is i32
-  let ch = 'a';               // char type, supports ASCII and Unicode
-  let t = true;               // Boolean type
-  let f: bool = false;        // Boolean type with explicit type
+  let default32 = 1;       // Default type is i32
+  let ch = 'a';            // char type, supports ASCII and Unicode
+  let imoji = '😻';        // A unicode char type
+  let t = true;            // Boolean type
+  let f: bool = false;     // Boolean type with explicit type
+  let unit = ();           // The unit type another one pulled from functional languages
 
+  // TODO: Reorder these asserts to match the order of the types above.
   assert!(t);
-  refute!(f);
+  refute!(f);              // The refute! macro from above
 
   assert_eq!(int8, -1);
   assert_eq!(unsigned8, 255);
@@ -114,7 +178,16 @@ fn basic_types() {
   assert_eq!(1_000_000, 1000000); // Underscores can be used for clarity
 
   // Note: Overflow checks are not done in release builds.
+}
 
+/*
+## Operators
+
+See [Rust operators](https://doc.rust-lang.org/book/appendix-02-operators.html)
+for the full list.
+*/
+#[test]
+fn operators() {
   assert_eq!(1 + 1, 2);           // Addition
   assert_eq!(3 - 1, 2);           // Subtraction
   assert_eq!(2 * 3, 6);           // Multiplication
@@ -122,7 +195,9 @@ fn basic_types() {
   assert_eq!(6 % 2, 0);           // Remainder/Modulo
 }
 
-// ## Strings
+/*
+## Strings
+*/
 #[test]
 fn strings() {
   let str: &str = "Hello this is a str type"; // fixed size, immutable, borrowed reference
@@ -135,7 +210,9 @@ fn strings() {
   assert_eq!(&string[..5], "Hello");
 }
 
-// ## Arrays
+/*
+## Arrays
+*/
 #[test]
 fn arrays() {
   let a = [1, 2, 3];              // Arrays are fixed-size, same-type values
@@ -149,18 +226,23 @@ fn arrays() {
   assert_eq!(c[2..4], [3, 3]);    // Array slices can be created with from_index..to_index same as string slices
 }
 
-// ## Structs
-// Structs are a way to group data together. They can be used to create
-// custom types. You can also define methods on them.
+/*
+## Structs
+Structs are a way to group data together. They can be used to create
+custom types. You can also define methods on them.
+*/
 struct User {
   name: String,
   email: String,
   active: bool,
 }
 
+/*
+`impl` allows us to add methods to a struct.
+This is a method on the User struct
+Constructors (new) are a way to create a new instance of a struct
+*/
 impl User {
-  // This is a method on the User struct
-  // Constructors are a way to create a new instance of a struct
   fn new(name: &str, email: &str, active: bool) -> Self {
     Self { name: name.to_string(), email: email.to_string(), active }
   }
@@ -175,9 +257,15 @@ fn structs() {
   assert!(user.active);
 }
 
-// This is a function, just like the ones above, but it's not a test.
-// Functions must specify their parameter and return types (if any).
+/*
+## Functions
+This is a function, just like our `main()` function at the start.
+Functions must specify their parameter and return types (if any).
 
+Notice the lack of semicolons at the end of the string literals.
+Rust has implicit returns. This is indicating it'll return a `&str` type.
+If we had a semicolon it would return a `()` type.
+*/
 fn conditional_msg(value: u32) -> &'static str {
   if value < 5 {
     "less than 5"
@@ -186,11 +274,13 @@ fn conditional_msg(value: u32) -> &'static str {
   }
 }
 
-// ## Control Flow
+/*
+## Control Flow
+*/
 #[test]
 fn control_flow() {
   // if expressions
-  assert_eq!("less than 5", conditional_msg(4));
+  assert_eq!("less than 5", conditional_msg(4));    // function from above
   assert_eq!("greater than 5", conditional_msg(7));
 
   let mut x = if true { 1 } else { 2 }; // If expressions
@@ -222,8 +312,10 @@ fn control_flow() {
   assert_eq!(result, "Single digit");
 }
 
-// ## Enums
-// Enums are like Unions types in functional languages.
+/*
+## Enums
+Enums are like Unions types in functional languages.
+*/
 enum Message {
   Quit,
   Move { x: i32, y: i32 },
@@ -249,12 +341,16 @@ fn enums() {
   assert_eq!(which_enum(Message::Quit), "Quit");
 }
 
-// ## Traits
-// Traits are a way to define shared behavior for types. They're similar to
-// interfaces in other languages.
+/*
+## Traits
+Traits are a way to define shared behavior for types. They're similar to
+interfaces in other languages.
 
-// The Copy trait is used to make a type copyable. This is useful for types
-// that are expensive to copy, like Strings.
+The Copy trait is used to make a type copyable. This is useful for types
+that are expensive to copy, like Strings.
+
+[TODO: Not finished]
+*/
 trait SomeTrait {
   fn copy(&self) -> Self;
 }
@@ -266,14 +362,16 @@ fn copy_trait() {
   assert_eq!(x, y);
 }
 
-// ## Borrowing
-// Borrowing is a way to share data without copying it. This is useful for
-// performance and memory management. The compiler will enforce that you
-// don't have multiple references to the same data. It also means you don't
-// have to worry about freeing memory.
+/*
+## Borrowing
+Borrowing is a way to share data without copying it. This is useful for
+performance and memory management. The compiler will enforce that you
+don't have multiple references to the same data. It also means you don't
+have to worry about freeing memory.
 
-// Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
-// Debug and PartialEq traits are so we can use assert_eq! to compare structs.
+Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
+Debug and PartialEq traits are so we can use assert_eq! to compare structs.
+*/
 #[derive(Copy, Clone)]
 #[derive(Debug, PartialEq)]
 struct Point {
@@ -305,14 +403,16 @@ fn borrowing() {
   assert_eq!(r3, "World");
 }
 
-// ## Lifetimes
-// Lifetimes are a way to specify how long a reference is valid. This is
-// useful for functions that return references to data. It also means that
-// you can't accidentally return a reference to data that will go out of
-// scope.
+/*
+## Lifetimes
+Lifetimes are a way to specify how long a reference is valid. This is
+useful for functions that return references to data. It also means that
+you can't accidentally return a reference to data that will go out of
+scope.
+*/
 #[allow(clippy::needless_lifetimes)]
-fn print_refs<'a, 'b>(x: &'a i32, y: &'b i32) { // These lifetimes can be inferred but shown to explain how they work.
-  println!("x is {}, y is {}", x, y);
+fn print_refs<'a, 'b>(x: &'a i32, y: &'b i32) { // These lifetimes can be inferred
+  println!("x is {}, y is {}", x, y);           // but shown to explain how they work.
 }
 
 #[allow(clippy::extra_unused_lifetimes)]
@@ -330,9 +430,11 @@ fn lifetimes() {
   failed_borrow();
 }
 
-// ## Error Handling
-// As opposed to exceptions or return codes some languages, errors are handled
-// with the Result type. This is a type that can either be Ok(value) or Err(error).
+/*
+## Error Handling
+As opposed to exceptions or return codes some languages, errors are handled
+with the Result type. This is a type that can either be Ok(value) or Err(error).
+*/
 fn divide(a: f64, b: f64) -> Result<f64, String> {
   if b == 0.0 {
     Err("Div by zero".to_string())
@@ -341,7 +443,9 @@ fn divide(a: f64, b: f64) -> Result<f64, String> {
   }
 }
 
-// Result types can be used in match expressions to handle errors.
+/*
+Result types can be used in match expressions to handle errors.
+*/
 fn handle_divide(a: f64, b: f64) -> String {
   match divide(a, b) {
     Err(msg) => msg,
@@ -355,7 +459,9 @@ fn error_handling() {
   assert_eq!(handle_divide(10.0, 2.0), "The answer is 5.");
 }
 
-// ## Closures
+/*
+## Closures
+*/
 #[test]
 fn closures() {
   let mut haystack = vec![1, 2];
@@ -367,3 +473,11 @@ fn closures() {
   assert!(contains(&1));
   refute!(contains(&4));
 }
+
+/*
+## Iterators
+
+## Standard Library
+
+### Reading directories and files
+*/

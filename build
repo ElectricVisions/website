@@ -5,6 +5,8 @@
 
 mkdir -p public/posts
 
+cargo -q run
+
 echo "## Generating HTML posts"
 for md_file in posts/*.md; do
   base_name=$(basename "$md_file" .md)
@@ -25,7 +27,7 @@ for html_file in public/posts/*.html; do
   fi
 done
 
-cargo -q run
+cargo -q run pp
 
 echo "## Generating 404.html"
 multimarkdown parse -r pages/404.md > public/404.html

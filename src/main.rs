@@ -1,11 +1,14 @@
 // metadata in md files overrides created date in filename
 // First H1 becomes title or metadata title if no H1
 
+use std::env;
 use std::fs;
 use std::io::Write;
 use std::fs::File;
 use std::path::PathBuf;
 use regex::Regex;
+
+mod rust_to_markdown;
 
 struct Post {
   name: String,
@@ -38,6 +41,15 @@ fn get_created(filename: &str) -> String {
 
 fn build_post(filename: String, path: PathBuf) -> Post {
   let contents = fs::read_to_string(&path).unwrap();
+
+  let ext = path.extension().unwrap().to_str().unwrap();
+  let contents =
+    if ext == "rs" {
+      let markdown = rust_to_markdown::code_to_markdown(&contents);
+      let path = path.with_extension("md");
+      fs::write(&path, &markdown).unwrap();
+      markdown
+    } else { contents };
 
   let mut title = String::from("");
   let mut created =  String::from("");
@@ -92,6 +104,8 @@ fn build_post(filename: String, path: PathBuf) -> Post {
 }
 
 fn main() {
+  let args: Vec<String> = env::args().collect();
+
   let mut posts: Vec<Post> =
     fs::read_dir("posts")
       .unwrap()
@@ -105,18 +119,21 @@ fn main() {
       )
       .collect();
 
-  let about = build_post("about.md".to_string(), "pages/about.md".into());
-
   posts.sort_by_key(|p| p.created.clone());
   posts.reverse();
 
+  if args.len() > 1 && args[1] == "pp" {
+    post_process(&mut posts);
+    return;
+  }
+
+  let about = build_post("about.md".to_string(), "pages/about.md".into());
   let mut index = File::create("public/index.html").unwrap();
 
   println!("## Writing to public/index.html");
 
   let nav = load_template("nav");
   let card = load_template("card");
-  let highlightjs = load_template("highlightjs");
   let posts_html = posts.iter().map(|p| {
     let created = format_or_empty("Published: ", &p.created);
     let updated = format_or_empty("Updated: ", &p.updated);
@@ -138,6 +155,10 @@ fn main() {
     .replace("{posts}", &posts_html);
 
   index.write_all(home.as_bytes()).unwrap();
+}
+
+fn post_process(posts: &mut Vec<Post>) {
+  let highlightjs = load_template("highlightjs");
 
   println!("## Post-processing posts");
 
