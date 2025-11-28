@@ -54,6 +54,7 @@ pkgs.mkShell {
     clippy
     rustfmt
     pkg-config
+    rust-script
 
     # Fast linker for improved build times
     lld_21
