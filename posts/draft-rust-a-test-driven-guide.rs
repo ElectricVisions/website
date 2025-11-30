@@ -1,4 +1,4 @@
-/*
+/**
 mmd header: {{../templates/header.html}}
 mmd footer: {{../templates/footer.html}}
 css: /css/main.css
@@ -27,23 +27,6 @@ like this:
 #![warn(clippy::all, clippy::pedantic)]
 ```
 
-## [rust-script](https://rust-script.org/)
-
-For basic stuff that doesn't need any crates (libraries) you can just run
-`rustc script.rs` and it'll compile a `./script` binary. However, for this
-blog I needed something more.
-
-`rust-script` compiles and runs one-off scripts from any folder.
-You can also add a crate description to the script to allow additional
-dependencies to be included.
-
-```rust
-{{../scripts/rust-script-test}}
-```
-
-For tests to run we need a main function. This would normally be the
-entry point of the program.
-
 ## Cargo
 
 For projects, you'll want to use `cargo` which is a build tool and package manager.
@@ -59,18 +42,37 @@ For projects, you'll want to use `cargo` which is a build tool and package manag
     cargo check             # Checks for errors without building. Fast.
 
 More info at [https://doc.rust-lang.org/cargo/](https://doc.rust-lang.org/cargo/).
+
+## [rust-script](https://rust-script.org/)
+
+For basic stuff that doesn't need any crates (libraries) you can just run
+`rustc script.rs` and it'll compile a `./script` binary. However, for this
+blog I needed something more.
+
+`rust-script` compiles and runs one-off scripts from any folder.
+You can also add a crate description to the script to allow additional
+dependencies to be included.
+
+```rust
+{{../scripts/rust-script-test}}
+```
+
+`rust-script`'s wrap the script in a `main()` function unless you specify one.
+Our tests need to run at the module level so we'll need to add a `main()`.
 */
 
 fn main() {}
 
-/*
+/**
 ## Macros
+
 Macros are a way to define reusable code. They're similar to functions but
 they're expanded by the compiler.
 This one creates a nice `refute!` macro that's the opposite of `assert!`.
 I'm a Ruby developer and brought this over from the Minitest syntax. I think
 it's easier to read than `assert!(!cond)`.
 */
+
 macro_rules! refute {
   ($cond:expr $(,)?) => { assert!(!$cond) };
   ($cond:expr, $($arg:tt)+) => { assert!(!$cond, $($arg)+) };
@@ -106,8 +108,10 @@ fn failing_test() {
 
 /*
 ## Variables
+
 Variables are immutable by default. Use `mut` to make them mutable.
 */
+
 #[test]
 fn variables() {
   let x = 2;                    // An immutable variable
@@ -138,7 +142,9 @@ fn variable_shadowing() {
 
 /*
 ## Basic Types
+
 */
+
 #[test]
 fn basic_types() {
   // isize and usize are architecture-dependent and used for collection indexing.
@@ -186,6 +192,7 @@ fn basic_types() {
 See [Rust operators](https://doc.rust-lang.org/book/appendix-02-operators.html)
 for the full list.
 */
+
 #[test]
 fn operators() {
   assert_eq!(1 + 1, 2);           // Addition
@@ -197,7 +204,9 @@ fn operators() {
 
 /*
 ## Strings
+
 */
+
 #[test]
 fn strings() {
   let str: &str = "Hello this is a str type"; // fixed size, immutable, borrowed reference
@@ -212,7 +221,9 @@ fn strings() {
 
 /*
 ## Arrays
+
 */
+
 #[test]
 fn arrays() {
   let a = [1, 2, 3];              // Arrays are fixed-size, same-type values
@@ -223,49 +234,23 @@ fn arrays() {
 
   let c = [3; 5];                 // Array with a fixed size can be initialized
   assert_eq!(c, [3, 3, 3, 3, 3]);
-  assert_eq!(c[2..4], [3, 3]);    // Array slices can be created with from_index..to_index same as string slices
-}
 
-/*
-## Structs
-Structs are a way to group data together. They can be used to create
-custom types. You can also define methods on them.
-*/
-struct User {
-  name: String,
-  email: String,
-  active: bool,
-}
-
-/*
-`impl` allows us to add methods to a struct.
-This is a method on the User struct
-Constructors (new) are a way to create a new instance of a struct
-*/
-impl User {
-  fn new(name: &str, email: &str, active: bool) -> Self {
-    Self { name: name.to_string(), email: email.to_string(), active }
-  }
-}
-
-#[test]
-fn structs() {
-  let user = User::new("Joe", "joe@example.com", true);
-
-  assert_eq!(user.name, "Joe");
-  assert_eq!(user.email, "joe@example.com");
-  assert!(user.active);
+  // Array slices can be created with from_index..to_index same as string slices
+  assert_eq!(c[2..4], [3, 3]);
 }
 
 /*
 ## Functions
+
 This is a function, just like our `main()` function at the start.
 Functions must specify their parameter and return types (if any).
 
 Notice the lack of semicolons at the end of the string literals.
-Rust has implicit returns. This is indicating it'll return a `&str` type.
-If we had a semicolon it would return a `()` type.
+Rust has implicit returns.
+This is indicating it'll return a `&str` type.
+If we had a semicolon it would return the unit type, `()`.
 */
+
 fn conditional_msg(value: u32) -> &'static str {
   if value < 5 {
     "less than 5"
@@ -275,8 +260,61 @@ fn conditional_msg(value: u32) -> &'static str {
 }
 
 /*
-## Control Flow
+## Structs
+
+Structs are a way to group data together. They can be used to create
+custom types. You can also define methods on them. Methods are functions
+that are associated with a struct.
 */
+
+struct Rect {
+  width: u32,
+  height: u32,
+}
+
+/*
+
+### Associated Functions
+
+`impl` allows us to add associated functions to a struct.
+`new` and `square` are constructors. They return an instance of Rect.
+`area` is a method because it's first parameter is `self`.
+`Self` is an alias for the struct type, in this case `Rect`.
+*/
+
+impl Rect {
+  fn new(width: u32, height: u32) -> Self {
+    Self { width, height } // Shorthand for Self { width: width, height: height }
+  }
+
+  fn square(size: u32) -> Self {
+    Self { width: size, height: size }
+  }
+
+  fn area(&self) -> u32 {
+    self.width * self.height
+  }
+}
+
+#[test]
+fn structs() {
+  let rect = Rect::new(10, 20);
+
+  assert_eq!(rect.width, 10);
+  assert_eq!(rect.height, 20);
+  assert_eq!(rect.area(), 200);
+
+  let square = Rect::square(10);
+  assert_eq!(square.width, 10);
+  assert_eq!(square.height, 10);
+  assert_eq!(square.area(), 100);
+}
+
+/*
+## Control Flow
+
+*/
+
 #[test]
 fn control_flow() {
   // if expressions
@@ -314,8 +352,10 @@ fn control_flow() {
 
 /*
 ## Enums
+
 Enums are like Unions types in functional languages.
 */
+
 enum Message {
   Quit,
   Move { x: i32, y: i32 },
@@ -329,7 +369,7 @@ fn which_enum(msg: Message) -> String {
     Message::Move { x, y } => format!("Move {} {}", x, y),
     Message::Write(text) => format!("Write {}", text),
     Message::ChangeColor(r, g, b) => format!("ChangeColor {} {} {}", r, g, b),
-    // Enums don't require a catch-all arm (_ -> ...) but you must handle all values if you don't
+    // _ => "Some other value", // Use this if you don't want to handle all values
   }
 }
 
@@ -343,14 +383,13 @@ fn enums() {
 
 /*
 ## Traits
+
 Traits are a way to define shared behavior for types. They're similar to
 interfaces in other languages.
 
-The Copy trait is used to make a type copyable. This is useful for types
-that are expensive to copy, like Strings.
-
 [TODO: Not finished]
 */
+
 trait SomeTrait {
   fn copy(&self) -> Self;
 }
@@ -364,6 +403,7 @@ fn copy_trait() {
 
 /*
 ## Borrowing
+
 Borrowing is a way to share data without copying it. This is useful for
 performance and memory management. The compiler will enforce that you
 don't have multiple references to the same data. It also means you don't
@@ -372,6 +412,7 @@ have to worry about freeing memory.
 Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
 Debug and PartialEq traits are so we can use assert_eq! to compare structs.
 */
+
 #[derive(Copy, Clone)]
 #[derive(Debug, PartialEq)]
 struct Point {
@@ -405,11 +446,13 @@ fn borrowing() {
 
 /*
 ## Lifetimes
+
 Lifetimes are a way to specify how long a reference is valid. This is
 useful for functions that return references to data. It also means that
 you can't accidentally return a reference to data that will go out of
 scope.
 */
+
 #[allow(clippy::needless_lifetimes)]
 fn print_refs<'a, 'b>(x: &'a i32, y: &'b i32) { // These lifetimes can be inferred
   println!("x is {}, y is {}", x, y);           // but shown to explain how they work.
@@ -432,6 +475,7 @@ fn lifetimes() {
 
 /*
 ## Error Handling
+
 As opposed to exceptions or return codes some languages, errors are handled
 with the Result type. This is a type that can either be Ok(value) or Err(error).
 */
@@ -461,7 +505,17 @@ fn error_handling() {
 
 /*
 ## Closures
+
+Closures can capture outer variables.
+
 */
+
+#[test]
+fn basic_closure() {
+  let outer_var = 42;
+  let closure = |i| outer_var + i;
+}
+
 #[test]
 fn closures() {
   let mut haystack = vec![1, 2];
