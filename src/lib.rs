@@ -11,6 +11,7 @@ use crate::post::PathConfig;
 pub fn run() {
   let paths = PathConfig {
     posts: PathBuf::from("posts"),
+    pages: PathBuf::from("pages"),
     artifacts: PathBuf::from("artifacts"),
     public: PathBuf::from("public"),
     public_posts: PathBuf::from("public/posts"),
@@ -26,7 +27,7 @@ pub fn run() {
   markdown::to_html_posts(&posts, &paths);
 
   println!("## Generating HTML pages (e.g. about, 404)");
-  markdown::to_html_pages(vec!["about", "404"]);
+  markdown::to_html_pages(vec!["about", "404"], &paths);
 
   println!("## Removing stale HTML posts");
   io::remove_stale_html_posts(&paths);

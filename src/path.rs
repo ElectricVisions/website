@@ -20,7 +20,6 @@ pub fn html(path: &Path, name: &str) -> String {
 pub fn modified(path: &str) -> SystemTime {
   if !exists(path) { return SystemTime::UNIX_EPOCH; }
 
-  println!("Checking {}", path);
   let metadata = fs::metadata(path).unwrap();
   metadata.modified().unwrap()
 }

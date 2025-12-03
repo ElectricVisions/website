@@ -18,6 +18,7 @@ pub struct Metadata {
 
 pub struct PathConfig {
   pub posts: PathBuf,
+  pub pages: PathBuf,
   pub artifacts: PathBuf,
   pub public: PathBuf,
   pub public_posts: PathBuf,

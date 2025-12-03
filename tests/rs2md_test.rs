@@ -2,7 +2,7 @@ use website::rs2md::*;
 
 #[test]
 fn comment_block_is_converted_to_markdown() {
-  let input = r#"/*
+  let input = r#"/**
 # A Heading
 This is a function.
 
@@ -13,7 +13,7 @@ fn a_function() {
   println!("Hello, world!");
 }
 
-/*
+/**
 ## A Subheading
 Some more text.
 */

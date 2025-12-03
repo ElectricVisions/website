@@ -13,8 +13,8 @@ pub fn from_rs(content: &str) -> String {
 
   for line in content.lines() {
     match line.trim_end() {
-      "/*" if matches!(action, CodeBlock::FirstLine) => action = CodeBlock::Comment,
-      "/*" if !matches!(action, CodeBlock::FirstLine) => action = CodeBlock::End,
+      "/**" if matches!(action, CodeBlock::FirstLine) => action = CodeBlock::Comment,
+      "/**" if !matches!(action, CodeBlock::FirstLine) => action = CodeBlock::End,
       "*/" => action = CodeBlock::Start,
       x if matches!(action, CodeBlock::Comment) => buffer.push(x),
       x if matches!(action, CodeBlock::Code) => buffer.push(x),

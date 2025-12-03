@@ -14,9 +14,12 @@ pub fn to_html_posts(posts: &Vec<Metadata>, paths: &PathConfig) {
   }
 }
 
-pub fn to_html_pages(pages: Vec<&str>) {
+pub fn to_html_pages(pages: Vec<&str>, paths: &PathConfig) {
   for p in pages {
-    to_html_page(&format!("pages/{p}.md"), &format!("public/{p}.html"));
+    to_html_page(
+      paths.pages.join(format!("{p}.md")).to_str().unwrap(),
+      paths.public.join(format!("{p}.html")).to_str().unwrap(),
+    );
   }
 }
 
@@ -44,7 +47,7 @@ pub fn from_rs_or_md_to_md(config: &PathConfig) {
   }
 }
 
-pub fn run_mmd(input: &str, output: &str) -> bool {
+fn run_mmd(input: &str, output: &str) -> bool {
   let response = std::process::Command::new("multimarkdown")
     .arg("parse")
     .arg("-r")
