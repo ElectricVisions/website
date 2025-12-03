@@ -7,3 +7,9 @@ rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 [build]
 # Use multiple cores for parallel compilation (auto-detect available cores)
 # Remove this line to let Cargo auto-detect optimal job count
+
+[alias]
+# Run tests with a single dot progress style
+t = "test --quiet --test tests"
+tst = "test --test tests"
+

@@ -1,14 +1,3 @@
-fn push_lines(lines: &Vec<&str>, markdown: &mut String) {
-  for line in lines {
-    push_line(line, markdown);
-  }
-}
-
-fn push_line(line: &str, markdown: &mut String) {
-  markdown.push_str(line);
-  markdown.push('\n');
-}
-
 enum CodeBlock {
   Start,
   End,
@@ -17,7 +6,7 @@ enum CodeBlock {
   Code,
 }
 
-pub fn code_to_markdown(content: &str) -> String {
+pub fn from_rs(content: &str) -> String {
   let mut markdown = String::new();
   let mut action = CodeBlock::FirstLine;
   let mut buffer = vec![];
@@ -64,45 +53,14 @@ pub fn code_to_markdown(content: &str) -> String {
   markdown
 }
 
-#[cfg(test)]
-mod tests {
-  use super::*;
-
-  #[test]
-  fn comment_block_is_converted_to_markdown() {
-    let input = r#"/*
-# A Heading
-This is a function.
-
-Plus some other information.
-*/
-
-fn a_function() {
-  println!("Hello, world!");
-}
-
-/*
-## A Subheading
-Some more text.
-*/
-"#;
-
-  let expected = r#"# A Heading
-This is a function.
-
-Plus some other information.
-
-```rust
-fn a_function() {
-  println!("Hello, world!");
-}
-```
-
-## A Subheading
-Some more text.
-"#;
-    let output = code_to_markdown(input);
-    assert_eq!(expected.to_string(), output);
-
+fn push_lines(lines: &Vec<&str>, markdown: &mut String) {
+  for line in lines {
+    push_line(line, markdown);
   }
 }
+
+fn push_line(line: &str, markdown: &mut String) {
+  markdown.push_str(line);
+  markdown.push('\n');
+}
+

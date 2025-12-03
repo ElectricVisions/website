@@ -1,0 +1,17 @@
+[general]
+host = "127.0.0.1"
+port = 1337
+root = "./public"
+log-level = "info"
+
+# Custom error pages
+page404 = "./404.html"
+
+# Disable directory listing
+directory-listing = false
+
+# Enable cache control headers
+cache-control-headers = true
+
+# Enable compression
+compression = true

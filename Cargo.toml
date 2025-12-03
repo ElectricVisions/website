@@ -1,7 +1,18 @@
 [package]
-name = "electricvisions"
+name = "website"
 version = "1.0.0"
 edition = "2024"
+autotests = false
 
 [dependencies]
 regex = "1.12.2"
+tempfile = "3.23.0"
+
+[lib]
+# Disable doc tests for all crates
+doctest = false
+
+[[test]]
+# For now we only have a single test group but may split into unit/integration.
+name = "tests"
+path = "tests/lib.rs"

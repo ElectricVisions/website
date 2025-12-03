@@ -514,6 +514,8 @@ Closures can capture outer variables.
 fn basic_closure() {
   let outer_var = 42;
   let closure = |i| outer_var + i;
+
+  assert_eq!(closure(1), 43);
 }
 
 #[test]

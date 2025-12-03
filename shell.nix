@@ -45,7 +45,7 @@ pkgs.mkShell {
   buildInputs = [
     multimarkdown7      # Convert markdown to HTML (version 7)
   ] ++ (with pkgs; [
-    binserve            # Static webserver for testing
+    static-web-server   # Static webserver for testing
     wrangler            # Cloudflare CLI
 
     # Rust
