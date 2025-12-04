@@ -6,9 +6,11 @@ tags: rust
 
 # Rust: A Test Driven Guide
 
-A quick tour of Rust for the experienced programmer.
+A quick tour of Rust for the experienced programmer driven by tests.
+We're all writing tests, right?!
 I wrote this to help me learn the language as efficiently as possible.
-It's not exhaustive, but should allow me to start writing some code.
+It's not exhaustive (but it is long!).
+It should allow me to start writing some code.
 
 One thing to note about the style.
 I've gone for 2 spaces for indentation due to many years as a Ruby programmer.
@@ -19,13 +21,18 @@ Neovim.
 {{TOC:2-3}}
 
 ## Linting with clippy
-clippy is a linting tool that checks for common mistakes and provides suggestions
+clippy is a linting tool that checks for common mistakes and provides
+suggestions.
+You can enable it like this:
 
-It's a bit strict for our examples so we'll leave it off. But you would enable
-like this:
 ```rust
-#![warn(clippy::all, clippy::pedantic)]
+#![warn(clippy::all)]
+#![warn(clippy::all, clippy::pedantic)] // For full pedantic mode
 ```
+
+It's a bit strict for our examples so we'll leave it off.
+However, pedantic mode is generally recommended as it allows you to
+catch potential issues earlier.
 
 ## Cargo
 
@@ -35,19 +42,43 @@ For projects, you'll want to use `cargo` which is a build tool and package manag
 `target/debug/` is where build artifacts end up in debug mode.
 `target/release/` is where build artifacts end up in release mode.
 
-    cargo new proj_name     # Create a new Rust project in proj_name/
-    cargo build             # Builds a project in debug mode
-    cargo build --release   # Builds a project in release mode
-    cargo run               # Runs the default binary
-    cargo check             # Checks for errors without building. Fast.
+```bash
+cargo new proj_name     # Create a new Rust project in proj_name/
+cargo build             # Builds a project in debug mode
+cargo build --release   # Builds a project in release mode
+cargo run               # Runs the default binary
+cargo check             # Checks for errors without building. Fast.
+```
 
-More info at [https://doc.rust-lang.org/cargo/](https://doc.rust-lang.org/cargo/).
+You can also apply the above clippy lints project-wide
+```toml
+// Cargo.toml (project-wide)
+[lints.clippy]
+all = "warn"
+pedantic = "warn"
+```
+
+or workspace-wide
+```toml
+// Cargo.toml (workspace):
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"
+
+// member/Cargo.toml:
+[lints]
+workspace = true
+```
+
+More info:
+* [Cargo docs](https://doc.rust-lang.org/cargo/)
+* [Clippy docs](https://doc.rust-lang.org/clippy/)
 
 ## [rust-script](https://rust-script.org/)
 
-For basic stuff that doesn't need any crates (libraries) you can just run
-`rustc script.rs` and it'll compile a `./script` binary. However, for this
-blog I needed something more.
+For basic stuff that doesn't need any crates (libraries) you can run
+`rustc script.rs` and it'll compile a `./script` binary. But if you want to add
+add a few crates..
 
 `rust-script` compiles and runs one-off scripts from any folder.
 You can also add a crate description to the script to allow additional
@@ -70,7 +101,8 @@ Macros are a way to define reusable code. They're similar to functions but
 they're expanded by the compiler.
 This one creates a nice `refute!` macro that's the opposite of `assert!`.
 I'm a Ruby developer and brought this over from the Minitest syntax. I think
-it's easier to read than `assert!(!cond)`.
+it's easier to read than `assert!(!cond)`. I won't go into macro syntax here
+(perhaps a future post).
 */
 
 macro_rules! refute {
@@ -78,8 +110,8 @@ macro_rules! refute {
   ($cond:expr, $($arg:tt)+) => { assert!(!$cond, $($arg)+) };
 }
 
-/*
-The #[test] **attribute** marks a function as a test. It'll get picked up
+/**
+The `#[test]` *attribute* marks a function as a test. It'll get picked up
  by the test runner and run when you run `cargo test` (or `cargo t`).
 */
 #[test]
@@ -93,7 +125,7 @@ fn hello_world() {           // This is a function
   assert_eq!(left, right);
 }
 
-/*
+/**
 The `should_panic` attribute tells the test runner to expect a panic.
 If it doesn't panic then the test will fail. Watch when you run `cargo t -- --nocapture`. You'll
 see it panics but all the tests pass.
@@ -106,7 +138,7 @@ fn failing_test() {
   assert_eq!(1, 2);
 }
 
-/*
+/**
 ## Variables
 
 Variables are immutable by default. Use `mut` to make them mutable.
@@ -127,7 +159,7 @@ fn variables() {
 
 }
 
-/*
+/**
 Variables may be shadowed, as in, the same name can be used in the same or
 nested scope and it'll override the one previously defined, allowing variable
 name reuse.
@@ -140,8 +172,10 @@ fn variable_shadowing() {
   assert_eq!(a, 2);             // Useful for reusing names.
 }
 
-/*
+/**
 ## Basic Types
+
+[Docs](https://doc.rust-lang.org/book/ch03-02-data-types.html)
 
 */
 
@@ -186,7 +220,7 @@ fn basic_types() {
   // Note: Overflow checks are not done in release builds.
 }
 
-/*
+/**
 ## Operators
 
 See [Rust operators](https://doc.rust-lang.org/book/appendix-02-operators.html)
@@ -202,7 +236,7 @@ fn operators() {
   assert_eq!(6 % 2, 0);           // Remainder/Modulo
 }
 
-/*
+/**
 ## Strings
 
 */
@@ -219,7 +253,7 @@ fn strings() {
   assert_eq!(&string[..5], "Hello");
 }
 
-/*
+/**
 ## Arrays
 
 */
@@ -239,7 +273,7 @@ fn arrays() {
   assert_eq!(c[2..4], [3, 3]);
 }
 
-/*
+/**
 ## Functions
 
 This is a function, just like our `main()` function at the start.
@@ -259,7 +293,7 @@ fn conditional_msg(value: u32) -> &'static str {
   }
 }
 
-/*
+/**
 ## Structs
 
 Structs are a way to group data together. They can be used to create
@@ -272,7 +306,7 @@ struct Rect {
   height: u32,
 }
 
-/*
+/**
 
 ### Associated Functions
 
@@ -310,7 +344,7 @@ fn structs() {
   assert_eq!(square.area(), 100);
 }
 
-/*
+/**
 ## Control Flow
 
 */
@@ -350,10 +384,12 @@ fn control_flow() {
   assert_eq!(result, "Single digit");
 }
 
-/*
+/**
 ## Enums
 
 Enums are like Unions types in functional languages.
+Great for pattern matching.
+And you can add data to them.
 */
 
 enum Message {
@@ -381,11 +417,11 @@ fn enums() {
   assert_eq!(which_enum(Message::Quit), "Quit");
 }
 
-/*
+/**
 ## Traits
 
-Traits are a way to define shared behavior for types. They're similar to
-interfaces in other languages.
+Traits are a way to define shared behavior for types.
+They're similar to interfaces in other languages.
 
 [TODO: Not finished]
 */
@@ -401,13 +437,13 @@ fn copy_trait() {
   assert_eq!(x, y);
 }
 
-/*
+/**
 ## Borrowing
 
-Borrowing is a way to share data without copying it. This is useful for
-performance and memory management. The compiler will enforce that you
-don't have multiple references to the same data. It also means you don't
-have to worry about freeing memory.
+Borrowing is a way to share data without copying it.
+This is useful for performance and memory management.
+The compiler will enforce that you don't have multiple references to the same data.
+It also means you don't have to worry about freeing memory.
 
 Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
 Debug and PartialEq traits are so we can use assert_eq! to compare structs.
@@ -424,6 +460,7 @@ struct Point {
 fn borrowing() {
   let p1 = Point { x: 1, y: 2 };
   let p2 = p1; // p1 is copied to p2 and both are still valid
+
 
   assert_eq!(p1, Point {x: 1, y: 2});
   assert_eq!(p2, Point {x: 1, y: 2});
@@ -444,7 +481,7 @@ fn borrowing() {
   assert_eq!(r3, "World");
 }
 
-/*
+/**
 ## Lifetimes
 
 Lifetimes are a way to specify how long a reference is valid. This is
@@ -473,7 +510,7 @@ fn lifetimes() {
   failed_borrow();
 }
 
-/*
+/**
 ## Error Handling
 
 As opposed to exceptions or return codes some languages, errors are handled
@@ -487,7 +524,7 @@ fn divide(a: f64, b: f64) -> Result<f64, String> {
   }
 }
 
-/*
+/**
 Result types can be used in match expressions to handle errors.
 */
 fn handle_divide(a: f64, b: f64) -> String {
@@ -503,7 +540,7 @@ fn error_handling() {
   assert_eq!(handle_divide(10.0, 2.0), "The answer is 5.");
 }
 
-/*
+/**
 ## Closures
 
 Closures can capture outer variables.
@@ -530,7 +567,7 @@ fn closures() {
   refute!(contains(&4));
 }
 
-/*
+/**
 ## Iterators
 
 ## Standard Library
