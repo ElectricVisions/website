@@ -18,7 +18,7 @@ pub fn run() {
   };
 
   println!("## Populating post metadata");
-  let mut posts = post::build_all(&paths);
+  let posts = post::build_all(&paths);
 
   println!("## Converting .rs files to .md");
   markdown::from_rs_or_md_to_md(&paths);
@@ -33,7 +33,7 @@ pub fn run() {
   io::remove_stale_html_posts(&paths);
 
   println!("## Post-processing posts");
-  post::post_process(&mut posts);
+  post::post_process(&posts, &paths);
 
   println!("## Generating index.html");
   post::generate_index(posts);

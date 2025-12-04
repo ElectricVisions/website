@@ -33,20 +33,20 @@ pub fn build_all(paths: &PathConfig) -> Vec<Metadata> {
 
 // Reload the generated HTML posts and insert tags, created & updated dates
 // And insert highlightjs.html into <head>
-pub fn post_process(posts: &mut Vec<Metadata>) {
+pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
   let highlightjs = io::load_template("highlightjs");
 
   for p in posts {
     let created = format_or_empty("Published: ", &p.created);
     let updated = format_or_empty("Updated: ", &p.updated);
-    let path = format!("public/posts/{}.html", &p.name);
+    let path = paths.public_posts.join(format!("{}.html", &p.name));
     let original_html =
       fs::read_to_string(&path)
-      .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path, e));
+      .unwrap_or_else(|e| panic!("Could not open: {}.\n{}", path.to_str().unwrap(), e));
 
     let html =
       original_html
-      .replace("</head>", format!("{highlightjs}</html>").as_str())
+      .replace("</head>", format!("{highlightjs}</head>").as_str())
       .replace("{tags}", &p.tags)
       .replace("{created}", &created)
       .replace("{updated}", &updated);
