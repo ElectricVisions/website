@@ -54,8 +54,8 @@ fn generate_index() {
   let paths = dirs.as_path_config();
 
   make_page(&paths);
-  let posts = vec![make_post(&paths)];
-  post::generate_index(posts, &paths);
+  let posts = [make_post(&paths)];
+  post::generate_index(&posts, &paths);
   let html = fs::read_to_string(paths.public.join("index.html")).unwrap();
 
   assert!(html.contains("<nav>"));

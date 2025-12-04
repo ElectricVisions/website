@@ -25,7 +25,7 @@ pub fn to_html_pages(pages: Vec<&str>, paths: &PathConfig) {
 
 pub fn to_html_page(input: &str, output: &str) {
   if path::modified(input) > path::modified(output) {
-    println!("  Converting {}", input);
+    println!("  Converting {input}");
     run_mmd(input, output);
   }
 }

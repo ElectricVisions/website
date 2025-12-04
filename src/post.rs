@@ -34,7 +34,7 @@ pub fn build_all(paths: &PathConfig) -> Vec<Metadata> {
 
 // Reload the generated HTML posts and insert tags, created & updated dates
 // And insert highlightjs.html into <head>
-pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
+pub fn post_process(posts: &[Metadata], paths: &PathConfig) {
   let highlightjs = io::load_template("highlightjs");
 
   for p in posts {
@@ -62,7 +62,7 @@ pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
 }
 
 // Generates the index.html page from metadata
-pub fn generate_index(posts: Vec<Metadata>, paths: &PathConfig) {
+pub fn generate_index(posts: &[Metadata], paths: &PathConfig) {
   let about = build(&paths.pages.join("about.md"));
   let mut index = File::create(paths.public.join("index.html")).unwrap();
 
@@ -97,23 +97,23 @@ pub fn generate_index(posts: Vec<Metadata>, paths: &PathConfig) {
 fn build(path: &PathBuf) -> Metadata {
   let contents = fs::read_to_string(path).unwrap();
 
-  let mut title = String::from("");
-  let mut created =  String::from("");
-  let mut updated = String::from("");
-  let mut tags = String::from("");
+  let mut title = String::new();
+  let mut created =  String::new();
+  let mut updated = String::new();
+  let mut tags = String::new();
   let mut is_metadata = true;
-  let mut intro = String::from("");
+  let mut intro = String::new();
   let heading_re = Regex::new(r"^# ").unwrap();
   let transclusion_re = Regex::new(r"\{\{.*\}\}").unwrap();
 
-  for line in contents.split("\n") {
+  for line in contents.split('\n') {
     let line = line.trim_end();
 
     if is_metadata {
       if line.is_empty() {
         is_metadata = false;
         continue;
-      } else if line.starts_with(" ") { // Don't try to parse multiline metadata
+      } else if line.starts_with(' ') { // Don't try to parse multiline metadata
         continue;
       }
 
@@ -151,7 +151,7 @@ fn build(path: &PathBuf) -> Metadata {
 }
 
 fn format_or_empty(label: &str, value: &String) -> String {
-  if value.is_empty() { return String::from("")}
+  if value.is_empty() { return String::new()}
 
   format!("{label}{value}")
 }

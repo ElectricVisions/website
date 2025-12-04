@@ -43,5 +43,5 @@ pub fn run() {
 
   // public/index.html
   println!("## Generating index.html");
-  post::generate_index(posts, &paths);
+  post::generate_index(&posts, &paths);
 }
