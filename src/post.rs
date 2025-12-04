@@ -26,7 +26,7 @@ pub struct PathConfig {
 
 // Builds the metadata struct for all posts
 pub fn build_all(paths: &PathConfig) -> Vec<Metadata> {
-  io::paths_in_dir(&paths.posts)
+  io::paths_in_dir(&paths.artifacts, &["md"])
     .iter()
     .map(build)
     .collect()
@@ -47,6 +47,7 @@ pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
 
     let html =
       original_html
+      .replace(highlightjs.as_str(), "")
       .replace("</head>", format!("{highlightjs}</head>").as_str())
       .replace("{tags}", &p.tags)
       .replace("{created}", &created)
@@ -55,7 +56,7 @@ pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
     if html != original_html {
       let mut post = File::create(path).unwrap();
       post.write_all(html.as_bytes()).unwrap();
-      println!("  Processed {}", p.name)
+      println!("  Processed {}", p.name);
     }
   }
 }

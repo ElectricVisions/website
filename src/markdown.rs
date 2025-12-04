@@ -25,25 +25,30 @@ pub fn to_html_pages(pages: Vec<&str>, paths: &PathConfig) {
 
 pub fn to_html_page(input: &str, output: &str) {
   if path::modified(input) > path::modified(output) {
+    println!("  Converting {}", input);
     run_mmd(input, output);
   }
 }
 
 pub fn from_rs_or_md_to_md(config: &PathConfig) {
-  let paths = io::paths_in_dir(&config.posts);
+  let paths = io::paths_in_dir(&config.posts, &["md", "rs"]);
   for p in paths {
-    let contents = fs::read_to_string(&p).unwrap();
-
     let ext = p.extension().unwrap().to_str().unwrap();
     let basename = p.file_stem().unwrap().to_str().unwrap();
-    let contents =
-      if ext == "rs" {
-        rs2md::from_rs(&contents)
-      } else {
-        contents
-      };
+    let output_path = path::markdown(&config.artifacts, basename);
 
-    fs::write(path::markdown(&config.artifacts, basename), &contents).unwrap();
+    if path::modified(p.to_str().unwrap()) > path::modified(&output_path) {
+      println!("  Converting {}", p.to_str().unwrap());
+      let contents = fs::read_to_string(&p).unwrap();
+      let contents =
+        if ext == "rs" {
+          rs2md::from_rs(&contents)
+        } else {
+          contents
+        };
+
+      fs::write(output_path, &contents).unwrap();
+    }
   }
 }
 
