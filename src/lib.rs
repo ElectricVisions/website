@@ -36,5 +36,5 @@ pub fn run() {
   post::post_process(&posts, &paths);
 
   println!("## Generating index.html");
-  post::generate_index(posts);
+  post::generate_index(posts, &paths);
 }

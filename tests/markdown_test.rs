@@ -26,10 +26,9 @@ fn to_html_pages_adds_html_pages_to_public_directory() {
 
   to_html_pages(pages, &paths);
 
-  let expected = "<h1 id=\"atitle\">A Title</h1>\n\n<p>Some intro text</p>\n";
   let actual = fs::read_to_string(paths.public.join("about.html")).unwrap();
   assert!(actual.starts_with("<!DOCTYPE html>"));
-  assert!(actual.contains(expected));
+  assert!(actual.contains("<h1 id=\"about\">About</h1>\n\n<p>Some stuff about me</p>"));
 }
 
 #[test]

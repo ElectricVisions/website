@@ -24,6 +24,7 @@ pub struct PathConfig {
   pub public_posts: PathBuf,
 }
 
+// Builds the metadata struct for all posts
 pub fn build_all(paths: &PathConfig) -> Vec<Metadata> {
   io::paths_in_dir(&paths.posts)
     .iter()
@@ -59,9 +60,10 @@ pub fn post_process(posts: &Vec<Metadata>, paths: &PathConfig) {
   }
 }
 
-pub fn generate_index(posts: Vec<Metadata>) {
-  let about = build(&PathBuf::from("pages/about.md"));
-  let mut index = File::create("public/index.html").unwrap();
+// Generates the index.html page from metadata
+pub fn generate_index(posts: Vec<Metadata>, paths: &PathConfig) {
+  let about = build(&paths.pages.join("about.md"));
+  let mut index = File::create(paths.public.join("index.html")).unwrap();
 
   let nav = io::load_template("nav");
   let card = io::load_template("card");
@@ -88,10 +90,9 @@ pub fn generate_index(posts: Vec<Metadata>) {
     .replace("{posts}", &posts_html);
 
   index.write_all(home.as_bytes()).unwrap();
-
 }
 
-// Then populates the metadata struct which allows the Home page to be generated
+// Populates the metadata struct which allows the Home page to be generated
 fn build(path: &PathBuf) -> Metadata {
   let contents = fs::read_to_string(path).unwrap();
 
@@ -160,6 +161,7 @@ fn unescape(s: &str) -> String {
 
 fn get_created(filename: &str) -> String {
   if filename.starts_with("draft-") { return "draft".to_string() }
+  if !filename.starts_with("20") { return filename.to_string() }
 
   filename[0..10].to_string()
 }

@@ -54,19 +54,26 @@ pub fn setup() -> TempPathConfig {
   }
 }
 
-fn create_page(path: &Path) {
+fn create_page(path: &Path, post: &post::Metadata) {
   let mut file = File::create(path).unwrap();
-  file.write_all(r#"mmd header: {{../templates/header.html}}
+  let title = &post.title;
+  let intro = &post.intro;
+  let updated =
+    if post.updated.is_empty() {
+      "".to_string()
+    } else {
+      format!("updated: {}\n", post.updated)
+    };
+
+  file.write_all(format!(r#"mmd header: {{../templates/header.html}}
 mmd footer: {{../templates/footer.html}}
 css: /css/main.cs
-updated: 2020-01-02
-tags: game
+{updated}tags: game
 
+# {title}
 
-# A Title
-
-Some intro text
-"#.as_bytes()).unwrap();
+{intro}
+"#).as_bytes()).unwrap();
 }
 
 fn create_code(path: &Path) {
@@ -122,12 +129,12 @@ pub fn make_post(dirs: &post::PathConfig) -> post::Metadata {
     name: "2020-01-01-test".to_string(),
     title: "A Title".to_string(),
     created: "2020-01-01".to_string(),
-    updated: "2020-01-02".to_string(),
+    updated: "".to_string(),
     tags: "game".to_string(),
     intro: "Some intro text\n".to_string(),
   };
 
-  create_page(&dirs.posts.join(MD_FILENAME));
+  create_page(&dirs.posts.join(MD_FILENAME), &post);
 
   post
 }
@@ -146,7 +153,16 @@ pub fn make_artifact(dirs: &post::PathConfig) -> post::Metadata {
 
 pub fn make_page(dirs: &post::PathConfig) -> &str {
   let filename = "about";
-  create_page(&dirs.pages.join(format!("{filename}.md")));
+  let post = post::Metadata {
+    name: "2020-01-01-about".to_string(),
+    title: "About".to_string(),
+    created: "2020-01-01".to_string(),
+    updated: "2020-01-02".to_string(),
+    tags: "game".to_string(),
+    intro: "Some stuff about me\n".to_string(),
+  };
+
+  create_page(&dirs.pages.join(format!("{filename}.md")), &post);
 
   filename
 }
