@@ -2,7 +2,6 @@ use std::path::{Path};
 use std::fs;
 use std::time::SystemTime;
 
-
 pub fn markdown(path: &Path, name: &str) -> String {
   let mut md_file = path.join(name);
   md_file.set_extension("md");
