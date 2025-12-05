@@ -299,3 +299,34 @@ figure:has(#zsavoyager) {
   margin-right: 1em;
   margin-bottom: 1em;
 }
+
+/* SCROLL TO TOP */
+#scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+    filter: var(--links-icons-filter);
+
+    &:hover {
+      filter: var(--links-active-filter);
+    }
+  }
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}

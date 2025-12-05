@@ -23,16 +23,33 @@ Neovim.
 ## Linting with clippy
 clippy is a linting tool that checks for common mistakes and provides
 suggestions.
-You can enable it like this:
+Some Cargo (introduced next) settings I use for building this blog.
 
 ```rust
-#![warn(clippy::all)]
-#![warn(clippy::all, clippy::pedantic)] // For full pedantic mode
+// Cargo.toml
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
 ```
 
-It's a bit strict for our examples so we'll leave it off.
+You can also apply the above clippy workspace-wide
+```toml
+// Cargo.toml (workspace):
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"
+
+// member/Cargo.toml:
+[lints]
+workspace = true
+```
+
+It's too strict for this guide so we'll leave it off.
 However, pedantic mode is generally recommended as it allows you to
 catch potential issues earlier.
+
+[Clippy docs](https://doc.rust-lang.org/clippy/)
 
 ## Cargo
 
@@ -50,29 +67,8 @@ cargo run               # Runs the default binary
 cargo check             # Checks for errors without building. Fast.
 ```
 
-You can also apply the above clippy lints project-wide
-```toml
-// Cargo.toml (project-wide)
-[lints.clippy]
-all = "warn"
-pedantic = "warn"
-```
-
-or workspace-wide
-```toml
-// Cargo.toml (workspace):
-[workspace.lints.clippy]
-all = "warn"
-pedantic = "warn"
-
-// member/Cargo.toml:
-[lints]
-workspace = true
-```
-
 More info:
-* [Cargo docs](https://doc.rust-lang.org/cargo/)
-* [Clippy docs](https://doc.rust-lang.org/clippy/)
+[Cargo docs](https://doc.rust-lang.org/cargo/)
 
 ## [rust-script](https://rust-script.org/)
 
@@ -422,6 +418,9 @@ fn enums() {
 
 Traits are a way to define shared behavior for types.
 They're similar to interfaces in other languages.
+* Unlike interfaces method names don't collide.
+  You specify to which trait you are implementing
+* You can provide default implementations
 
 [TODO: Not finished]
 */

@@ -1,0 +1,14 @@
+<a href="#" id="scroll-to-top" title="Jump to top">
+  <img src="/images/jump-to-top.svg" alt="Jump to top">
+</a>
+
+<script>
+  const btn = document.getElementById('scroll-to-top');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 100);
+  });
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
