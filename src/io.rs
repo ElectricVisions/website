@@ -31,3 +31,12 @@ pub fn remove_stale_html_posts(paths: &PathConfig) {
     }
   }
 }
+
+pub fn remove_drafts(paths: &PathConfig) {
+  for html_file in paths_in_dir(&paths.public_posts, &["html"]) {
+    if html_file.file_stem().unwrap().to_str().unwrap().starts_with("draft-") {
+      println!("  Removing draft {}", html_file.to_str().unwrap());
+      std::fs::remove_file(html_file).unwrap();
+    }
+  }
+}

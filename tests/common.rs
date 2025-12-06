@@ -60,12 +60,12 @@ fn create_page(path: &Path, post: &post::Metadata) {
   let intro = &post.intro;
   let updated =
     if post.updated.is_empty() {
-      "".to_string()
+      String::new()
     } else {
       format!("updated: {}\n", post.updated)
     };
 
-  file.write_all(format!(r#"mmd header: {{../templates/header.html}}
+  file.write_all(format!(r"mmd header: {{../templates/header.html}}
 mmd footer: {{../templates/footer.html}}
 css: /css/main.cs
 {updated}tags: game
@@ -73,7 +73,7 @@ css: /css/main.cs
 # {title}
 
 {intro}
-"#).as_bytes()).unwrap();
+").as_bytes()).unwrap();
 }
 
 fn create_code(path: &Path) {
@@ -129,12 +129,27 @@ pub fn make_post(dirs: &post::PathConfig) -> post::Metadata {
     name: "2020-01-01-test".to_string(),
     title: "A Title".to_string(),
     created: "2020-01-01".to_string(),
-    updated: "".to_string(),
+    updated: String::new(),
     tags: "game".to_string(),
     intro: "Some intro text\n".to_string(),
   };
 
   create_page(&dirs.posts.join(MD_FILENAME), &post);
+
+  post
+}
+
+pub fn make_draft(dirs: &post::PathConfig) -> post::Metadata {
+  let post = post::Metadata {
+    name: "draft-test".to_string(),
+    title: "A Draft Title".to_string(),
+    created: "2020-01-01".to_string(),
+    updated: String::new(),
+    tags: "game".to_string(),
+    intro: "Some draft text\n".to_string(),
+  };
+
+  create_page(&dirs.posts.join("draft-test.md"), &post);
 
   post
 }
@@ -172,4 +187,24 @@ pub fn make_html(dirs: &post::PathConfig) -> PathBuf {
   create_html(&path);
 
   path
+}
+
+pub fn make_index(dirs: &post::PathConfig) {
+  let path = dirs.public.join("index.html");
+
+  let mut file =File::create(path).unwrap();
+  file.write_all(r#"<!DOCTYPE html>
+    <article class="card draft">
+      Lorem ipsum dolor sit amet
+    </article>
+
+    <article class="card">
+      consectetur adipiscing elit sed do
+    </article>
+
+    <article class="card">
+      Duis aute irure dolor in reprehenderit
+    </article>
+</html>
+"#.as_bytes()).unwrap();
 }

@@ -4,13 +4,14 @@ mmd footer: {{../templates/footer.html}}
 css: /css/main.css
 tags: rust
 
-# Rust: A Test Driven Guide
+# Rust: A Test Driven Guide/Reference
 
-A quick tour of Rust for the experienced programmer driven by tests.
+A tour of Rust for the experienced programmer driven by tests.
 We're all writing tests, right?!
 I wrote this to help me learn the language as efficiently as possible.
 It's not exhaustive (but it is long!).
 It should allow me to start writing some code.
+It'll also serve as a reference.
 
 One thing to note about the style.
 I've gone for 2 spaces for indentation due to many years as a Ruby programmer.
@@ -573,3 +574,5 @@ fn closures() {
 
 ### Reading directories and files
 */
+#[test]
+fn do_something() {}

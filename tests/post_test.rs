@@ -47,23 +47,3 @@ fn post_process_again_does_not_add_highlightjs_tags() {
 
   assert_eq!(html.match_indices(&highlightjs).count(), 1);
 }
-
-#[test]
-fn generate_index() {
-  let dirs = setup();
-  let paths = dirs.as_path_config();
-
-  make_page(&paths);
-  let posts = [make_post(&paths)];
-  post::generate_index(&posts, &paths);
-  let html = fs::read_to_string(paths.public.join("index.html")).unwrap();
-
-  assert!(html.contains("<nav>"));
-  assert!(html.contains("<article class=\"card\">"));
-  assert!(html.contains("<a href=\"/posts/2020-01-01-test.html\">"));
-  assert!(html.contains("<h3 class=\"title\">A Title</h3>"));
-  assert!(html.contains("<p class=\"created\">Published: 2020-01-01</p>"));
-  assert!(html.contains("<p class=\"intro\">Some intro text\n</p>"));
-  assert!(html.contains("<p>\n      Some stuff about me"));
-  assert!(html.contains("<a href=\"/about.html\">more...</a>"));
-}

@@ -1,1 +1,2 @@
-watcher posts/*.rs -- rust-script --test posts/*.rs
+watcher posts/*.{md,rs}  -- cargo run
+
