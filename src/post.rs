@@ -5,6 +5,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::io;
+use crate::string::format_or_empty;
 
 #[derive(Debug, PartialEq)]
 pub struct Metadata {
@@ -61,40 +62,8 @@ pub fn post_process(posts: &[Metadata], paths: &PathConfig) {
   }
 }
 
-// Generates the index.html page from metadata
-pub fn generate_index(posts: &[Metadata], paths: &PathConfig) {
-  let about = build(&paths.pages.join("about.md"));
-  let mut index = File::create(paths.public.join("index.html")).unwrap();
-
-  let nav = io::load_template("nav");
-  let card = io::load_template("card");
-  let posts_html = posts.iter().map(|p| {
-    let created = format_or_empty("Published: ", &p.created);
-    let updated = format_or_empty("Updated: ", &p.updated);
-
-    card
-      .replace("{name}", &p.name)
-      .replace("{tags}", &p.tags)
-      .replace("{created}", &created)
-      .replace("{updated}", &updated)
-      .replace("{title}", &p.title)
-      .replace("{intro}", &p.intro)
-  }).collect::<Vec<String>>().join("\n");
-
-  let more_html =
-    format!("{} <div><a href=\"/about.html\">more...</a></div>", &about.intro);
-  let home =
-    fs::read_to_string("templates/home.html")
-    .unwrap()
-    .replace("{nav}", &nav)
-    .replace("{intro}", &more_html)
-    .replace("{posts}", &posts_html);
-
-  index.write_all(home.as_bytes()).unwrap();
-}
-
 // Populates the metadata struct which allows the Home page to be generated
-fn build(path: &PathBuf) -> Metadata {
+pub fn build(path: &PathBuf) -> Metadata {
   let contents = fs::read_to_string(path).unwrap();
 
   let mut title = String::new();
@@ -148,12 +117,6 @@ fn build(path: &PathBuf) -> Metadata {
     tags,
     intro,
   }
-}
-
-fn format_or_empty(label: &str, value: &String) -> String {
-  if value.is_empty() { return String::new()}
-
-  format!("{label}{value}")
 }
 
 fn unescape(s: &str) -> String {

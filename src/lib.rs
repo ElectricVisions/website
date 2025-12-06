@@ -1,21 +1,18 @@
-use std::path::PathBuf;
+use std::path::{PathBuf};
 
-pub mod rs2md;
+pub mod cloudflare;
+pub mod index;
 pub mod io;
-pub mod post;
 pub mod markdown;
 pub mod path;
+pub mod post;
+pub mod rs2md;
+pub mod string;
 
 use crate::post::PathConfig;
 
-pub fn run() {
-  let paths = PathConfig {
-    posts: PathBuf::from("posts"),
-    pages: PathBuf::from("pages"),
-    artifacts: PathBuf::from("artifacts"),
-    public: PathBuf::from("public"),
-    public_posts: PathBuf::from("public/posts"),
-  };
+pub fn build() {
+  let paths = setup_config();
 
   // posts -> artifacts
   println!("## Converting .rs files to .md");
@@ -43,5 +40,31 @@ pub fn run() {
 
   // public/index.html
   println!("## Generating index.html");
-  post::generate_index(&posts, &paths);
+  index::generate(&posts, &paths);
 }
+
+pub fn deploy() {
+  let paths = setup_config();
+  // remove drafts from artifacts and public/posts
+  io::remove_drafts(&paths);
+
+  // remove draft <article>s from public/index.html
+  index::remove_drafts(&paths);
+
+  // deploy to Cloudflare Pages
+  cloudflare::deploy();
+
+  // Call build to restore drafts
+  build();
+}
+
+fn setup_config() -> PathConfig {
+  PathConfig {
+    posts: PathBuf::from("posts"),
+    pages: PathBuf::from("pages"),
+    artifacts: PathBuf::from("artifacts"),
+    public: PathBuf::from("public"),
+    public_posts: PathBuf::from("public/posts"),
+  }
+}
+

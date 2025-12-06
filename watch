@@ -1,1 +1,8 @@
-watcher src tests -- cargo t
+#!/usr/bin/env bash
+
+trap 'kill $(jobs -p) 2>/dev/null' INT TERM
+
+watcher src tests -- cargo t &
+watcher posts/*.rs -- rust-script --test posts/*.rs &
+
+wait

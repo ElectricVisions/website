@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-rm public/posts/draft-*.html
-wrangler pages deploy public --project-name=electricvisions
-
-# A crude way to rebuild any draft posts that were removed above
-./build

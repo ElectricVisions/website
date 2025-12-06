@@ -1,5 +1,6 @@
 #![cfg(test)]
 mod common;
+mod index_test;
 mod io_test;
 mod markdown_test;
 mod path_test;
