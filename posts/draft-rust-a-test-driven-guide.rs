@@ -342,6 +342,63 @@ fn structs() {
 }
 
 /**
+## Enums
+
+Enums are like Unions types in functional languages.
+Great for pattern matching.
+And you can add data to them.
+You can't compare enums directly, instead, use `matches!`.
+*/
+
+enum Message {
+  Quit,
+  Move { x: i32, y: i32 },
+  Write(String),
+  ChangeColor(i32, i32, i32),
+}
+
+fn which_enum(msg: Message) -> String {
+  match msg {
+    Message::Quit => "Quit".to_string(),
+    Message::Move { x, y } => format!("Move {} {}", x, y),
+    Message::Write(text) => format!("Write {}", text),
+    Message::ChangeColor(r, g, b) => format!("ChangeColor {} {} {}", r, g, b),
+    // _ => "Some other value", // Use this if you don't want to handle all values
+  }
+}
+
+#[test]
+fn enums() {
+  assert_eq!(which_enum(Message::Write(String::from("Hello"))), "Write Hello");
+  assert_eq!(which_enum(Message::Move { x: 1, y: 2 }), "Move 1 2");
+  assert_eq!(which_enum(Message::ChangeColor(1, 2, 3)), "ChangeColor 1 2 3");
+  assert_eq!(which_enum(Message::Quit), "Quit");
+
+  let msg = Message::Write(String::from("Hello"));
+  assert!(matches!(msg, Message::Write(_)));
+}
+
+/**
+## Type Aliases
+
+Type aliases are a way to give a type a new name.
+Here, the first one gives a name to a tuple.
+The second, assigns a more convenient name to an enum.
+*/
+
+type MyPoint = (i32, i32);
+enum VeryLongEnumNameForDoingStuffWithNumbers { Add, Subtract }
+type Operations = VeryLongEnumNameForDoingStuffWithNumbers;
+
+#[test]
+fn type_aliases() {
+  let p: MyPoint = (1, 2);
+  assert_eq!(p, (1, 2));
+
+  assert!(matches!(Operations::Add, VeryLongEnumNameForDoingStuffWithNumbers::Add));
+}
+
+/**
 ## Control Flow
 
 */
@@ -379,39 +436,6 @@ fn control_flow() {
       _ => "Some other value",
     };
   assert_eq!(result, "Single digit");
-}
-
-/**
-## Enums
-
-Enums are like Unions types in functional languages.
-Great for pattern matching.
-And you can add data to them.
-*/
-
-enum Message {
-  Quit,
-  Move { x: i32, y: i32 },
-  Write(String),
-  ChangeColor(i32, i32, i32),
-}
-
-fn which_enum(msg: Message) -> String {
-  match msg {
-    Message::Quit => "Quit".to_string(),
-    Message::Move { x, y } => format!("Move {} {}", x, y),
-    Message::Write(text) => format!("Write {}", text),
-    Message::ChangeColor(r, g, b) => format!("ChangeColor {} {} {}", r, g, b),
-    // _ => "Some other value", // Use this if you don't want to handle all values
-  }
-}
-
-#[test]
-fn enums() {
-  assert_eq!(which_enum(Message::Write(String::from("Hello"))), "Write Hello");
-  assert_eq!(which_enum(Message::Move { x: 1, y: 2 }), "Move 1 2");
-  assert_eq!(which_enum(Message::ChangeColor(1, 2, 3)), "ChangeColor 1 2 3");
-  assert_eq!(which_enum(Message::Quit), "Quit");
 }
 
 /**
