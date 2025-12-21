@@ -763,6 +763,78 @@ fn more_iterators() {
 ## Standard Library
 
 ### Reading directories and files
+
+The standard library provides `std::fs` for filesystem operations.
 */
+
+use std::fs;
+use std::io::Write;
+
 #[test]
-fn do_something() {}
+fn reading_files() {
+  // Create a temporary file for testing
+  let test_file = "/tmp/rust_guide_test.txt";
+  fs::write(test_file, "Hello, Rust!").expect("Failed to write file");
+
+  // Read entire file to string
+  let contents = fs::read_to_string(test_file).expect("Failed to read file");
+  assert_eq!(contents, "Hello, Rust!");
+
+  // Read as bytes
+  let bytes = fs::read(test_file).expect("Failed to read file");
+  assert_eq!(bytes, b"Hello, Rust!");
+
+  // Clean up
+  fs::remove_file(test_file).expect("Failed to remove file");
+}
+
+#[test]
+fn working_with_directories() {
+  let test_dir = "/tmp/rust_guide_test_dir";
+
+  // Create a directory
+  fs::create_dir_all(test_dir).expect("Failed to create directory");
+
+  // Create some files in the directory
+  fs::write(format!("{}/file1.txt", test_dir), "Content 1").expect("Failed to write");
+  fs::write(format!("{}/file2.txt", test_dir), "Content 2").expect("Failed to write");
+
+  // Read directory entries
+  let entries: Vec<String> = fs::read_dir(test_dir)
+    .expect("Failed to read directory")
+    .filter_map(|entry| entry.ok())
+    .map(|entry| entry.file_name().to_string_lossy().to_string())
+    .collect();
+
+  assert_eq!(entries.len(), 2);
+  assert!(entries.contains(&"file1.txt".to_string()));
+  assert!(entries.contains(&"file2.txt".to_string()));
+
+  // Clean up
+  fs::remove_dir_all(test_dir).expect("Failed to remove directory");
+}
+
+/**
+### Path manipulation
+
+Use `std::path::Path` and `std::path::PathBuf` for working with file paths.
+*/
+
+use std::path::Path;
+
+#[test]
+fn path_operations() {
+  let path = Path::new("/tmp/example/file.txt");
+
+  assert_eq!(path.parent(), Some(Path::new("/tmp/example")));
+  assert_eq!(path.file_name(), Some(std::ffi::OsStr::new("file.txt")));
+  assert_eq!(path.extension(), Some(std::ffi::OsStr::new("txt")));
+
+  // Check if path exists (will be false for this example)
+  refute!(path.exists());
+
+  // Join paths
+  let dir = Path::new("/tmp");
+  let file_path = dir.join("test.txt");
+  assert_eq!(file_path, Path::new("/tmp/test.txt"));
+}
