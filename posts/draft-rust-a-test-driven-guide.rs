@@ -441,39 +441,6 @@ fn control_flow() {
 }
 
 /**
-## Enums
-
-Enums are like Unions types in functional languages.
-Great for pattern matching.
-And you can add data to them.
-*/
-
-enum Message {
-  Quit,
-  Move { x: i32, y: i32 },
-  Write(String),
-  ChangeColor(i32, i32, i32),
-}
-
-fn which_enum(msg: Message) -> String {
-  match msg {
-    Message::Quit => "Quit".to_string(),
-    Message::Move { x, y } => format!("Move {} {}", x, y),
-    Message::Write(text) => format!("Write {}", text),
-    Message::ChangeColor(r, g, b) => format!("ChangeColor {} {} {}", r, g, b),
-    // _ => "Some other value", // Use this if you don't want to handle all values
-  }
-}
-
-#[test]
-fn enums() {
-  assert_eq!(which_enum(Message::Write(String::from("Hello"))), "Write Hello");
-  assert_eq!(which_enum(Message::Move { x: 1, y: 2 }), "Move 1 2");
-  assert_eq!(which_enum(Message::ChangeColor(1, 2, 3)), "ChangeColor 1 2 3");
-  assert_eq!(which_enum(Message::Quit), "Quit");
-}
-
-/**
 ## Error Handling
 
 For simple programs you can use `panic!` to stop execution and print a message.
@@ -617,8 +584,8 @@ Closures are anonymous functions that can capture outer variables. This is usefu
 for example, to pass different implementations to a iterators.
 */
 
-fn do_something_with(list: &[i32], closure: impl Fn(i32) -> bool) -> Vec<i32>{
-  list.map(closure)
+fn do_something_with(list: &[i32], closure: impl Fn(i32) -> i32) -> Vec<i32>{
+  list.iter().map(|&x| closure(x)).collect()
 }
 
 
