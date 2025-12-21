@@ -192,15 +192,15 @@ fn basic_types() {
   let f: bool = false;     // Boolean type with explicit type
   let unit = ();           // The unit type another one pulled from functional languages
 
-  // TODO: Reorder these asserts to match the order of the types above.
-  assert!(t);
-  refute!(f);              // The refute! macro from above
-
   assert_eq!(int8, -1);
   assert_eq!(unsigned8, 255);
   assert!((float64 - float32).abs() < f64::EPSILON); // Roughly equal
   assert_eq!(default32, 1);
   assert_eq!(ch, 'a');
+  assert_eq!(imoji, '😻');
+  assert!(t);
+  refute!(f);              // The refute! macro from above
+  assert_eq!(unit, ());
 
   let tuple = (1, "hello", 3);      // Tuples can contain any type
   let (one, hello, three) = tuple;  // They can be destructured like so
