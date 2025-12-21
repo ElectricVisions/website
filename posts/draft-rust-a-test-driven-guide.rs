@@ -485,22 +485,97 @@ fn error_handling() {
 
 Traits are a way to define shared behavior for types.
 They're similar to interfaces in other languages.
-* Unlike interfaces method names don't collide.
-  You specify to which trait you are implementing
+* Unlike interfaces, method names don't collide.
+  You specify which trait you are implementing
 * You can provide default implementations
-
-[TODO: Not finished]
+* Types can implement multiple traits
 */
 
-trait SomeTrait {
-  fn copy(&self) -> Self;
+trait Describe {
+  fn describe(&self) -> String;
+}
+
+trait Area {
+  fn area(&self) -> f64;
+}
+
+struct Circle {
+  radius: f64,
+}
+
+impl Describe for Circle {
+  fn describe(&self) -> String {
+    format!("A circle with radius {}", self.radius)
+  }
+}
+
+impl Area for Circle {
+  fn area(&self) -> f64 {
+    std::f64::consts::PI * self.radius * self.radius
+  }
+}
+
+struct Square {
+  side: f64,
+}
+
+impl Describe for Square {
+  fn describe(&self) -> String {
+    format!("A square with side {}", self.side)
+  }
+}
+
+impl Area for Square {
+  fn area(&self) -> f64 {
+    self.side * self.side
+  }
 }
 
 #[test]
-fn copy_trait() {
-  let x = 5;
-  let y = x;
-  assert_eq!(x, y);
+fn traits() {
+  let circle = Circle { radius: 2.0 };
+  assert_eq!(circle.describe(), "A circle with radius 2");
+  assert!((circle.area() - 12.566370614359172).abs() < f64::EPSILON);
+
+  let square = Square { side: 3.0 };
+  assert_eq!(square.describe(), "A square with side 3");
+  assert!((square.area() - 9.0).abs() < f64::EPSILON);
+}
+
+/**
+Traits can also have default implementations. Types can override them or use
+the default.
+*/
+
+trait Greet {
+  fn greet(&self) -> String {
+    "Hello!".to_string()  // Default implementation
+  }
+}
+
+struct Person {
+  name: String,
+}
+
+impl Greet for Person {
+  fn greet(&self) -> String {
+    format!("Hello, I'm {}!", self.name)  // Override the default
+  }
+}
+
+struct Robot;
+
+impl Greet for Robot {
+  // Uses default implementation - no override needed
+}
+
+#[test]
+fn trait_defaults() {
+  let person = Person { name: "Alice".to_string() };
+  assert_eq!(person.greet(), "Hello, I'm Alice!");
+
+  let robot = Robot;
+  assert_eq!(robot.greet(), "Hello!");
 }
 
 /**
