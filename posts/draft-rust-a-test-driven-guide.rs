@@ -587,8 +587,8 @@ It's useful for performance and memory management.
 The compiler will enforce that you don't have multiple mutable references to the same data.
 It also means you don't have to worry about freeing memory.
 
-Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
-Debug and PartialEq traits are so we can use assert_eq! to compare structs.
+Add traits `Copy` & `Clone` and as long as the types are all `Copy` the whole struct can be copied.
+`Debug` and `PartialEq` traits are so we can use `assert_eq!` to compare structs.
 */
 
 #[derive(Copy, Clone)]
@@ -760,6 +760,7 @@ fn more_iterators() {
   assert_eq!(nums.iter().find(|&&x| x > 10), None);
 }
 
+/**
 ## Standard Library
 
 ### Reading directories and files
