@@ -4,7 +4,7 @@ mmd footer: {{../templates/footer.html}}
 css: /css/main.css
 tags: rust
 
-# Rust: A Test Driven Guide/Reference
+# Rust: A Test Driven Guide
 
 A tour of Rust for the experienced programmer driven by tests.
 We're all writing tests, right?!
@@ -108,6 +108,8 @@ macro_rules! refute {
 }
 
 /**
+## Attributes
+
 The `#[test]` *attribute* marks a function as a test. It'll get picked up
  by the test runner and run when you run `cargo test` (or `cargo t`).
 */
@@ -127,7 +129,7 @@ The `should_panic` attribute tells the test runner to expect a panic.
 If it doesn't panic then the test will fail. Watch when you run `cargo t -- --nocapture`. You'll
 see it panics but all the tests pass.
 A panic is like an exception in other languages. However Rust uses the Result
-type to indicate success or failure.
+type to indicate success or failure (See [Error Handling][errorhandling]).
 */
 #[test]
 #[should_panic(expected = "assertion `left == right` failed\n  left: 1\n right: 2")]
@@ -439,6 +441,79 @@ fn control_flow() {
 }
 
 /**
+## Enums
+
+Enums are like Unions types in functional languages.
+Great for pattern matching.
+And you can add data to them.
+*/
+
+enum Message {
+  Quit,
+  Move { x: i32, y: i32 },
+  Write(String),
+  ChangeColor(i32, i32, i32),
+}
+
+fn which_enum(msg: Message) -> String {
+  match msg {
+    Message::Quit => "Quit".to_string(),
+    Message::Move { x, y } => format!("Move {} {}", x, y),
+    Message::Write(text) => format!("Write {}", text),
+    Message::ChangeColor(r, g, b) => format!("ChangeColor {} {} {}", r, g, b),
+    // _ => "Some other value", // Use this if you don't want to handle all values
+  }
+}
+
+#[test]
+fn enums() {
+  assert_eq!(which_enum(Message::Write(String::from("Hello"))), "Write Hello");
+  assert_eq!(which_enum(Message::Move { x: 1, y: 2 }), "Move 1 2");
+  assert_eq!(which_enum(Message::ChangeColor(1, 2, 3)), "ChangeColor 1 2 3");
+  assert_eq!(which_enum(Message::Quit), "Quit");
+}
+
+/**
+## Error Handling
+
+For simple programs you can use `panic!` to stop execution and print a message.
+Setting `RUST_BACKTRACE=1` env var will print a backtrace.
+*/
+#[test]
+#[should_panic(expected = "Crash and burn")]
+fn panics() {
+  panic!("Crash and burn");
+}
+
+/**
+As opposed to exceptions or return codes in some languages, errors are handled
+with the Result type. This is a type that can either be Ok(value) or Err(error).
+*/
+fn divide(a: f64, b: f64) -> Result<f64, String> {
+  if b == 0.0 {
+    Err("Div by zero".to_string())
+  } else {
+    Ok(a / b)
+  }
+}
+
+/**
+Result types can be used in match expressions to handle errors.
+*/
+fn handle_divide(a: f64, b: f64) -> String {
+  match divide(a, b) {
+    Err(msg) => msg,
+    Ok(answer) => format!("The answer is {}.", answer),
+  }
+}
+
+#[test]
+fn error_handling() {
+  assert_eq!(handle_divide(10.0, 0.0), "Div by zero");
+  assert_eq!(handle_divide(10.0, 2.0), "The answer is 5.");
+}
+
+/**
 ## Traits
 
 Traits are a way to define shared behavior for types.
@@ -465,8 +540,9 @@ fn copy_trait() {
 ## Borrowing
 
 Borrowing is a way to share data without copying it.
-This is useful for performance and memory management.
-The compiler will enforce that you don't have multiple references to the same data.
+It's a central concept in Rust.
+It's useful for performance and memory management.
+The compiler will enforce that you don't have multiple mutable references to the same data.
 It also means you don't have to worry about freeing memory.
 
 Add traits Copy & Clone and as long as the types are all Copy the whole struct can be copied.
@@ -535,48 +611,23 @@ fn lifetimes() {
 }
 
 /**
-## Error Handling
-
-As opposed to exceptions or return codes some languages, errors are handled
-with the Result type. This is a type that can either be Ok(value) or Err(error).
-*/
-fn divide(a: f64, b: f64) -> Result<f64, String> {
-  if b == 0.0 {
-    Err("Div by zero".to_string())
-  } else {
-    Ok(a / b)
-  }
-}
-
-/**
-Result types can be used in match expressions to handle errors.
-*/
-fn handle_divide(a: f64, b: f64) -> String {
-  match divide(a, b) {
-    Err(msg) => msg,
-    Ok(answer) => format!("The answer is {}.", answer),
-  }
-}
-
-#[test]
-fn error_handling() {
-  assert_eq!(handle_divide(10.0, 0.0), "Div by zero");
-  assert_eq!(handle_divide(10.0, 2.0), "The answer is 5.");
-}
-
-/**
 ## Closures
 
-Closures can capture outer variables.
-
+Closures are anonymous functions that can capture outer variables. This is useful
+for example, to pass different implementations to a iterators.
 */
+
+fn do_something_with(list: &[i32], closure: impl Fn(i32) -> bool) -> Vec<i32>{
+  list.map(closure)
+}
+
 
 #[test]
 fn basic_closure() {
   let outer_var = 42;
-  let closure = |i| outer_var + i;
+  let closure = |i| outer_var + i; // This can be passed elsewhere and subsequently called
 
-  assert_eq!(closure(1), 43);
+  assert_eq!(do_something_with(&[1, 2, 3], closure), &[43, 44, 45]);
 }
 
 #[test]
