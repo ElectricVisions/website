@@ -687,6 +687,79 @@ fn closures() {
 /**
 ## Iterators
 
+Iterators are lazy, meaning they don't do anything until you consume them.
+Common methods include `map`, `filter`, `collect`, `fold`, `enumerate`, and more.
+*/
+
+#[test]
+fn iterators() {
+  let nums = vec![1, 2, 3, 4, 5];
+
+  // map: transform each element
+  let doubled: Vec<i32> = nums.iter().map(|x| x * 2).collect();
+  assert_eq!(doubled, vec![2, 4, 6, 8, 10]);
+
+  // filter: keep only elements that match a condition
+  let evens: Vec<i32> = nums.iter().filter(|&&x| x % 2 == 0).copied().collect();
+  assert_eq!(evens, vec![2, 4]);
+
+  // Chaining: combine multiple operations
+  let result: Vec<i32> = nums.iter()
+    .filter(|&&x| x > 2)
+    .map(|x| x * 10)
+    .collect();
+  assert_eq!(result, vec![30, 40, 50]);
+
+  // fold: reduce to a single value
+  let sum: i32 = nums.iter().fold(0, |acc, x| acc + x);
+  assert_eq!(sum, 15);
+
+  // enumerate: get index with each element
+  let indexed: Vec<(usize, i32)> = nums.iter().copied().enumerate().collect();
+  assert_eq!(indexed, vec![(0, 1), (1, 2), (2, 3), (3, 4), (4, 5)]);
+
+  // for loops use iterators under the hood
+  let mut total = 0;
+  for n in nums.iter() {
+    total += n;
+  }
+  assert_eq!(total, 15);
+}
+
+/**
+More iterator methods: `take`, `skip`, `zip`, `any`, `all`, `find`.
+*/
+
+#[test]
+fn more_iterators() {
+  let nums = vec![1, 2, 3, 4, 5];
+
+  // take: get first n elements
+  let first_three: Vec<i32> = nums.iter().take(3).copied().collect();
+  assert_eq!(first_three, vec![1, 2, 3]);
+
+  // skip: skip first n elements
+  let skip_two: Vec<i32> = nums.iter().skip(2).copied().collect();
+  assert_eq!(skip_two, vec![3, 4, 5]);
+
+  // zip: combine two iterators
+  let letters = vec!['a', 'b', 'c'];
+  let paired: Vec<(i32, char)> = nums.iter().copied().zip(letters.iter().copied()).collect();
+  assert_eq!(paired, vec![(1, 'a'), (2, 'b'), (3, 'c')]);
+
+  // any: check if any element matches
+  assert!(nums.iter().any(|&x| x > 4));
+  refute!(nums.iter().any(|&x| x > 10));
+
+  // all: check if all elements match
+  assert!(nums.iter().all(|&x| x > 0));
+  refute!(nums.iter().all(|&x| x > 2));
+
+  // find: get first element matching condition
+  assert_eq!(nums.iter().find(|&&x| x > 3), Some(&4));
+  assert_eq!(nums.iter().find(|&&x| x > 10), None);
+}
+
 ## Standard Library
 
 ### Reading directories and files
