@@ -233,8 +233,12 @@ article.post {
     margin-bottom: 0.5em;
   }
 
-  p {
+  p, ul {
     margin-top: 1em;
+
+    ul {
+      margin-top: 0;
+    }
   }
 
   h2 {
@@ -243,6 +247,15 @@ article.post {
 
   h3, h4 {
     margin-top: 1em;
+  }
+
+  ul {
+    list-style: disc;
+    padding-left: 1em;
+
+    ul {
+      list-style: circle;
+    }
   }
 
   img {
