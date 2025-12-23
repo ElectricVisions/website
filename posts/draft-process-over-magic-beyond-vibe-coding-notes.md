@@ -4,7 +4,9 @@ css: /css/main.css
 tags: ai vibe coding notes
 
 
-# Process over Magic: Beyond Vibe Coding - Notes
+# Process over Magic: Beyond Vibe Coding - Book Notes
+
+I bought this [book](https://pragprog.com/titles/ubaidev/process-over-magic-beyond-vibe-coding/) from Pragmatic Programmers.
 
 It's a short book (100 or so pages) with video content as well. I actually
 like short books. Less fluff, more stuff, as they say. Some of the tips are
@@ -16,80 +18,70 @@ My school computer room had a poster up on the wall that read, "To err is human,
 to really foul up requires a computer". This is even truer with AI. It allows you
 amplify your progress, or your mistakes exponentially.
 
-## Practices to follow when working with AI
+Whilst I was already familiar with some of these practices there was still
+plenty to learn and some practices I already knew about but probably aren't
+following properly (e.g. rolling back when things get out of hand). So it's good
+to get these tips reaffirmed and in a single resource.
 
-* Guide the AI assistant, don't convince it
-* Start with what you want the result to look like
-* Use formats like Markdown, JSON or roles
-* Use examples or exclusions to help narrow focus
+## Prompting Strategies
+
+* Guide the AI, don't convince it
+* Be precise, not vague (e.g., "Always run tests and verify they pass before
+  committing code" instead of "be careful")
+* Avoid role-based prompting (e.g., "You're an expert developer" tries to make
+  the AI an actor which it's not)
+* Start with what you want the result to look like (Markdown, JSON, roles)
+* Use examples or exclusions to narrow focus
+* Focused prompts: one goal (add feature, fix bug, OR refactor)
+* Ask the AI:
+  > If instructions are unclear, ask follow-up questions before continuing
+  > If a request is impossible, explain why and suggest alternatives
 * Iterate: plan, test, refine, compare, reuse prompts that work
+
+## Git & Version Control
+
+* Start with clean git and passing tests
 * One prompt, one commit
 * Only commit working code
 * Always review code before committing
-* Focused prompts - one of: Add a new feature, fix a bug, refactor code
 * Stuck? Roll back. Don't waste time fighting it. Try a different approach
-* Prefer being precise with your prompts over role based (e.g. "You're an expert
-  developer" tries to make the AI an actor which it's not)
-* Don't be vague (e.g. "be careful"). Instead, use "Always run tests and verify
-  they pass before committing code".
-* Remember to ask the AI to go back over the code (once committed) and check
-  for refactoring opportunities (like you would do normally)
-* When working on a large feature or kicking off new project, a good prompt
-  is a clear and detailed document (1000 words or less),
-  generally written in a document that can be referenced later, particularly
-  if it's something complex that might need to be broken down further
-  * Add it as a plan document
-  * Shape it with iterations (this can take several hours)
-  * Rewrite the document in a more compact format
-* Walking Skeleton/Minimum Viable Product (MVP) is a good way to get started
-  * Start with a simpler version of the feature
-  * Add it to the plan document
-  * Refactor it to be more efficient
-* Take regular breaks to help maintain a sustainable, comfortable pace
-* Ask the assistant to update the design document with all recent progress
-* When working in large codebases
-  * It's better to move in small steps
-  * > You are a junior developer doing your best. If an instruction seems
-    > unclear, wrong or unfamiliar, ask for more information before continuing
-    [TODO: Check whether "You are a junior developer is actually necessary"]
-  * Write pseudocode directly into a file and ask the AI to turn it into code
-  * Try asking the AI to tell us how to do something without writing the code,
-    then we write it ourselves. Learn by doing, guided by the AI. Ask the AI if
-    you get stuck
-* Debugging planner. Ask the AI to create a step-by-step debugging plan that
-  follows progressive logic: starting with most likely cause and eliminating
-  them one by one
-* Parallel designing - Ask the AI to write or rewrite a feature in different
-  ways. Explore design variations or different libraries. Review, tweak,
-  rollback and try again. Think: AI guided spikes
-* Use git worktrees
-* Ask the AI to write a script to make some transformations much more efficient
-  than asking directly (though Claude is quite good at doing this automatically)
-* When working on one thing and we notice that something else is broken, commit
-  the code (if it's working & passing tests) then immediately fix the broken
-  thing and follow up with another commit.
+* When you notice something else is broken: commit (if it's working
+  & passing tests), then immediately fix and commit separately
+* Use git worktrees to work on multiple approaches in parallel
 
+## Planning & Documentation
 
-I've used something similar to the following before. It's a good reminder that
-with the right prompts, the AI can be extremely helpful and also not go blazing
-ahead with the wrong idea.
+* Large features: write detailed document (≤1000 words) as plan document
+* Shape plan through iterations (can take several hours)
+* Rewrite in compact format after shaping
+* Walking Skeleton/MVP: start with simpler version, add to plan document,
+  refactor to be more efficient
+* Ask AI to update design docs with progress
+* Write pseudocode directly into files, ask AI to implement
+* Parallel designing: Ask AI to write/rewrite feature in different ways. Explore
+  variations, different libraries. Review, tweak, rollback and try again. Think:
+  AI guided spikes
 
-* > If instructions are unclear, ask follow up questions before continuing
-* > If a request is impossible, explain why and suggest an alternatives
+## Code Quality & Review
 
+* Don't trust confident responses - always verify and test
+* AI doesn't know how to write code, it just knows patterns
+* AI may write bad or poorly performing code - iterate on it
+* Ask AI to review for refactoring opportunities after committing
+* Ensure adequate test coverage
 
-## Things to watch out for
+## Debugging & Problem-Solving
 
-* Don't be fooled by confident responses
-* Always review, verify and ensure adequate test coverage
-* AI's don't know how to write code, they just know patterns
-* AI's may write bad or poorly performing code, again, iterate on it
+* Create step-by-step debugging plan (most likely → least likely causes)
+* Large codebases: move in small steps; if instructions seem unclear, wrong, or
+  unfamiliar, ask AI for more information before continuing
+* Ask AI to explain how without writing code, then write it yourself (learn by
+  doing, guided by AI)
+* Ask AI to write a script for complex transformations (more efficient than
+  having the AI do it directly)
 
-## Author Preferences
+## Workflow & Sustainability
 
-* Prefers to stop the assistant after 5 minutes if it hasn't produced a good
-  result. There are exceptions to this, such as initial scaffolding
+* Take regular breaks for sustainable, comfortable pace
+* Stop after 5 minutes if no good results (exception: initial scaffolding)
 
-## Links
-
-* [Process over Magic: Beyond Vibe Coding (Pragmatic Programmers)](https://pragprog.com/titles/ubaidev/process-over-magic-beyond-vibe-coding/)
