@@ -6,22 +6,24 @@ tags: ai vibe coding notes
 
 # Process over Magic: Beyond Vibe Coding - Book Notes
 
+Some notes from the book.
+It's a short book (103 pages, current beta) with video content as well.
+I like short books. A good short book can deliver a central point concisely.
+
 I bought this [book](https://pragprog.com/titles/ubaidev/process-over-magic-beyond-vibe-coding/) from Pragmatic Programmers.
 
-It's a short book (100 or so pages) with video content as well. I actually
-like short books. Less fluff, more stuff, as they say. Some of the tips are
-pretty standard practices. Experienced developers start with a clean git, passing
-test suite, and only commits working code. However, it's even more critical
-these practices are followed when working with AI.
+Many of the tips are standard practice. Experienced developers start with a
+clean git, passing test suite, and only commit working code. However, it's even
+more critical these practices are followed when working with AI.
 
 My school computer room had a poster up on the wall that read, "To err is human,
 to really foul up requires a computer". This is even truer with AI. It allows you
 amplify your progress, or your mistakes exponentially.
 
 Whilst I was already familiar with some of these practices there was still
-plenty to learn and some practices I already knew about but probably aren't
-following properly (e.g. rolling back when things get out of hand). So it's good
-to get these tips reaffirmed and in a single resource.
+plenty to learn and some practices I already knew about but aren't following
+properly (e.g. rolling back when things get out of hand). So it's good
+to get these tips reaffirmed in a single resource.
 
 ## Prompting Strategies
 
