@@ -12,7 +12,7 @@ I like short books. A good short book can deliver a central point concisely.
 
 I bought this [book](https://pragprog.com/titles/ubaidev/process-over-magic-beyond-vibe-coding/) from Pragmatic Programmers. No affiliation, I just like their books.
 
-Many of the tips are standard practice.
+Some of the tips are standard practice.
 Experienced developers start with a clean git, passing test suite, and only commit working code.
 However, it's even more critical these practices are followed when working with AI.
 
@@ -20,11 +20,7 @@ My school computer room had a poster up on the wall that read, "To err is human,
 to really foul up requires a computer".
 This is even truer with AI. It allows you amplify your progress, or your mistakes exponentially.
 
-I was already familiar with some of these practices.
-However, there was still plenty to learn.
-Some I already knew about but aren't following properly
-(e.g. rolling back when things get out of hand).
-It's good to get these tips reaffirmed in a single resource.
+I recommend reading the book and making your own notes.
 
 ## Prompting Strategies
 
